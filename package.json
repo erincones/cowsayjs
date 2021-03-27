@@ -1,0 +1,23 @@
+{
+  "name": "cowsayjs",
+  "version": "0.1.0",
+  "description": "A nodejs clone of the classic cowsay and cowthink cli commands",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"setup some unit test framework\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/erincones/cowsayjs.git"
+  },
+  "keywords": [
+    "cowsay",
+    "cowthink"
+  ],
+  "author": "Erick Rincones <erick.rincones@ciens.ucv.ve>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/erincones/cowsayjs/issues"
+  },
+  "homepage": "https://github.com/erincones/cowsayjs#readme"
+}
