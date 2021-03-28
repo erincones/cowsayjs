@@ -5,7 +5,9 @@
   "parserOptions": {
     "ecmaVersion": 5
   },
-  "extends": "eslint:recommended",
+  "extends": [
+    "eslint:recommended"
+  ],
   "rules": {
     "semi": "error",
     "no-extra-parens": "error",
@@ -22,7 +24,12 @@
       ],
       "plugins": [
         "@typescript-eslint"
-      ]
+      ],
+      "rules": {
+        "quotes": "off",
+        "@typescript-eslint/semi": "error",
+        "@typescript-eslint/quotes": [ "error", "backtick" ]
+      }
     }
   ]
 }
