@@ -1,0 +1,28 @@
+{
+  "env": {
+    "node": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 5
+  },
+  "extends": "eslint:recommended",
+  "rules": {
+    "semi": "error",
+    "no-extra-parens": "error",
+    "strict": [ "error", "global" ],
+    "quotes": [ "error", "double" ],
+    "indent": [ "error", 2, { "SwitchCase": 1 } ]
+  },
+  "overrides": [
+    {
+      "files": [ "*.ts" ],
+      "parser": "@typescript-eslint/parser",
+      "extends": [
+        "plugin:@typescript-eslint/recommended"
+      ],
+      "plugins": [
+        "@typescript-eslint"
+      ]
+    }
+  ]
+}
