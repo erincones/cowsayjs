@@ -8,7 +8,7 @@
  *
  * The eyes and tongue are hardcoded for some cows and cannot be changed.
  */
-export interface CowFace {
+export declare interface CowFace {
   /** Eyes of the cow */
   eyes: string;
   /** Tongue of the cow */
@@ -18,7 +18,7 @@ export interface CowFace {
 /**
  * Name for known faces
  */
-export interface CowMode {
+export declare interface CowMode {
   /** The short name of the mode */
   id: string;
   /** The full name of the mode */

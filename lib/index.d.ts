@@ -2,13 +2,14 @@
  * A nodejs clone of the classic cowsay and cowthink cli commands.
  */
 
+
 import { CowAction } from "./box";
 
 
 /**
  * Common options for cowsay and cowthink functions
  */
-export interface CowOptions {
+export declare interface CowOptions {
   /** Cow name */
   cow?: string;
   /** Cow face mode */
@@ -26,7 +27,7 @@ export interface CowOptions {
  *
  * The common cowsay and cowthink options with the action property.
  */
-export interface CowFullOptions extends CowOptions {
+export declare interface CowFullOptions extends CowOptions {
   /** Cow action */
   action?: CowAction;
 }
@@ -34,6 +35,11 @@ export interface CowFullOptions extends CowOptions {
 
 /**
  * Build an ASCII cow with the message
+ *
+ * Default values:
+ *  - action: "say"
+ *  - eyes: "oo"
+ *  - wrap: 40
  *
  * @param message Message to show
  * @param options Cow options with action
@@ -44,6 +50,10 @@ export declare function moo(message?: string, options?: CowFullOptions): string;
 /**
  * Build an ASCII cow saying the message
  *
+ * Default values:
+ *  - eyes: "oo"
+ *  - wrap: 40
+ *
  * @param message Message to say
  * @param options Cow options
  * @returns ASCII cow saying the message
@@ -52,6 +62,10 @@ export declare function cowsay(message?: string, options?: CowOptions): string;
 
 /**
  * Build an ASCII cow thinking the message
+ *
+ * Default values:
+ *  - eyes: "oo"
+ *  - wrap: 40
  *
  * @param message Message to think
  * @param options Cow options
