@@ -9,10 +9,16 @@
     ],
     "module": "commonjs",
     "moduleResolution": "node",
+    "esModuleInterop": true,
     "strict": true,
-    "noEmit": true
+    "noEmit": true,
+    "typeRoots": [
+      "node_modules/@types/",
+      "types/"
+    ]
   },
   "exclude": [
-    "node_modules/"
+    "node_modules/",
+    "**/*.cow.js",
   ]
 }
