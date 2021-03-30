@@ -17,7 +17,7 @@ function render(action) {
     "        |  | |  |\n" +
     "        |   o   |\n" +
     "        | |   | |\n" +
-    "        |m|   |m|  \n"
+    "        |m|   |m|  "
   );
 }
 

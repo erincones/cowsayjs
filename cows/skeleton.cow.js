@@ -17,7 +17,7 @@ function render(action, eyes) {
     "                   I`I'///'' I I\n" +
     "                   I I       I I\n" +
     "                   ~ ~       ~ ~\n" +
-    "                     Scowleton\n"
+    "                     Scowleton"
   );
 }
 

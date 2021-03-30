@@ -15,7 +15,7 @@ function render(action) {
     "         .             .\n" +
     ".........              .......\n" +
     "..............................\n" +
-    "Elephant inside ASCII snake\n"
+    "Elephant inside ASCII snake"
   );
 }
 

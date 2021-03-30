@@ -69,7 +69,7 @@ function getArg(token, j, argv, i) {
  */
 function printHelp() {
   // Version
-  var version = "0.2.0";
+  var version = "0.2.1";
 
   // Get current script
   var script = process.argv[1].replace(/\\/g, "/");
@@ -268,7 +268,7 @@ function execArgs(args) {
 
   // Print cow with shell message
   else if (process.stdin.isTTY === true || args.message.length !== 0) {
-    process.stdout.write(lib.moo(args.message, args));
+    process.stdout.write(lib.moo(args.message, args) + "\n");
   }
 
   // Print cow with piped message
@@ -281,7 +281,7 @@ function execArgs(args) {
     }).on("end", function() {
       // Remove empty final line and print cow
       args.message = args.message.replace(/\n$/, "");
-      process.stdout.write(lib.moo(args.message, args));
+      process.stdout.write(lib.moo(args.message, args) + "\n");
     });
   }
 }

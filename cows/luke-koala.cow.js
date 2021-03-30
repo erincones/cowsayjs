@@ -17,7 +17,7 @@ function render(action) {
     "     (_)-(_)\n" +
     "     Luke\n" +
     "     Sywalker\n" +
-    "     koala   \n"
+    "     koala   "
   );
 }
 

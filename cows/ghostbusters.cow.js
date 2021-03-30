@@ -28,7 +28,7 @@ function render(action) {
     "            \\XXXXX--__/              __-- XXXX/\n" +
     "             -XXXXXXXX---------------  XXXXXX-\n" +
     "                \\XXXXXXXXXXXXXXXXXXXXXXXXXX/\n" +
-    "                  \"\"VXXXXXXXXXXXXXXXXXXV\"\"\n"
+    "                  \"\"VXXXXXXXXXXXXXXXXXXV\"\""
   );
 }
 

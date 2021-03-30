@@ -12,7 +12,7 @@ function render(action) {
     "   " + a + "   \\\n" +
     "        \\ /\\\n" +
     "        ( )\n" +
-    "      .( o ).\n"
+    "      .( o )."
   );
 }
 

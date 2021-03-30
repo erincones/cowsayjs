@@ -26,7 +26,7 @@ function render(action, eyes) {
     "      ||      \\/  .\\/      ||\n" +
     "                 . .\n" +
     "                '.'.`\n" +
-    "            COW-OPERATION                           \n"
+    "            COW-OPERATION                           "
   );
 }
 

@@ -19,7 +19,7 @@ function render(action, eyes) {
     "             |~|  ~\n" +
     "             |_| o\n" +
     "             |#|/\n" +
-    "            _+#+_\n"
+    "            _+#+_"
   );
 }
 

@@ -14,7 +14,7 @@ function render(action, eyes, tongue) {
     "         " + a + "  (" + e + ")\\_______\n" +
     "            (__)\\       )\\/\\\n" +
     "             " + t + " ||--WWW |\n" +
-    "                ||     ||\n"
+    "                ||     ||"
   );
 }
 

@@ -14,7 +14,7 @@ function render(action) {
     "               ##        )\\/\\\n" +
     "                ||-----w||\n" +
     "                ||      ||\n" +
-    "               Cowth Vader\n"
+    "               Cowth Vader"
   );
 }
 

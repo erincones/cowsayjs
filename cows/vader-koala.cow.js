@@ -17,7 +17,7 @@ function render(action) {
     "    (_)-(_)\n" +
     "     Darth\n" +
     "     Vader\n" +
-    "     koala        \n"
+    "     koala        "
   );
 }
 

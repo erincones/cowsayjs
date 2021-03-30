@@ -14,7 +14,7 @@ function render(action, eyes, tongue) {
     "   " + a + "  (" + e + ")\\_______        ________\n" +
     "      (__)\\       )\\/\\    |Super |\n" +
     "       " + t + " ||----W |       |Milker|\n" +
-    "          ||    UDDDDDDDDD|______|\n"
+    "          ||    UDDDDDDDDD|______|"
   );
 }
 

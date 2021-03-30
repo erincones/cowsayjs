@@ -15,7 +15,7 @@ function render(action) {
     "        (__)\\|    |   )\\_\n" +
     "             |    |_w |  \\\n" +
     "             |    |  ||   *\n" +
-    "             Cower....\n"
+    "             Cower...."
   );
 }
 

@@ -16,7 +16,7 @@ function render(action, eyes) {
     "          | (__) |      )\\/\\\n" +
     "           \\____/|----w |\n" +
     "                ||     ||\n" +
-    "	         Moofasa\n"
+    "	         Moofasa"
   );
 }
 

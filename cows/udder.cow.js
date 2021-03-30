@@ -18,7 +18,7 @@ function render(action, eyes, tongue) {
     "           |          |\\\n" +
     "           ||---(  )_|| *\n" +
     "           ||    UU  ||\n" +
-    "           ==        ==    \n"
+    "           ==        ==    "
   );
 }
 
