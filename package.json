@@ -1,22 +1,27 @@
 {
   "name": "cowsayjs",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A nodejs clone of the classic cowsay and cowthink cli commands",
   "main": "lib/index.js",
   "scripts": {
+    "moo": "cli/moo.js",
+    "cowsay": "cli/cowsay.js",
+    "cowthink": "cli/cowthink.js",
     "test": "echo \"setup some unit test framework\" && exit 1"
   },
   "bin": {
-    "cowsayjs": "cli/index.js"
+    "moojs": "cli/moo.js",
+    "cowsayjs": "cli/cowsay.js",
+    "cowthinkjs": "cli/cowthink.js"
   },
   "types": "types/index.d.ts",
   "files": [
+    "cli/",
     "cows/",
     "lib/",
     "types/",
     "LICENSE",
-    "README.md",
-    "cli.js"
+    "README.md"
   ],
   "repository": {
     "type": "git",

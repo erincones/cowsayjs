@@ -7,8 +7,6 @@
       "dom",
       "es5"
     ],
-    "module": "commonjs",
-    "moduleResolution": "node",
     "esModuleInterop": true,
     "strict": true,
     "noEmit": true,
@@ -16,9 +14,5 @@
       "node_modules/@types/",
       "types/"
     ]
-  },
-  "exclude": [
-    "node_modules/",
-    "**/*.cow.js",
-  ]
+  }
 }

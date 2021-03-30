@@ -2,13 +2,32 @@
 
 
 /**
+ * Force cow value to the given lenght at least
+ *
+ * @param {string | undefined} value Cow value
+ * @param {string | undefined} def Default value
+ * @param {number} len Maximum length
+ * @returns {string} Fixed value
+ * @package
+ */
+function fix(value, def, len) {
+  if (typeof value !== "string") {
+    return typeof def !== "string" ? "" : def.slice(0, len);
+  }
+
+  return value.slice(0, len);
+}
+
+
+/**
  * Force the cow acion to one character at least
  *
  * @param {string | undefined} action Cow action
+ * @param {string} [def] Default value
  * @returns {string} Fixed action
  */
-function fixAction(action) {
-  return typeof action !== "string" || action.length === 0 ? "" : action[0];
+function fixAction(action, def) {
+  return fix(action, def, 1);
 }
 
 /**
@@ -19,11 +38,7 @@ function fixAction(action) {
  * @returns {string} Fixed property
  */
 function fixFace(prop, def) {
-  if (typeof prop !== "string") {
-    return typeof def !== "string" ? "" : def.slice(0, 2);
-  }
-
-  return prop.slice(0, 2);
+  return fix(prop, def, 2);
 }
 
 
