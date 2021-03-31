@@ -23,6 +23,6 @@ function render(action, eyes, tongue) {
 
 /** @type {import(".").Cow} */
 module.exports = {
-  name: "ghostbusters",
+  name: "head-in",
   render: render
 };
