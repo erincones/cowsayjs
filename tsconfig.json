@@ -14,5 +14,10 @@
       "node_modules/@types/",
       "types/"
     ]
-  }
+  },
+  "exclude": [
+    "node_modules/",
+    ".nyc_output/",
+    "coverage/"
+  ]
 }

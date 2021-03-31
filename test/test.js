@@ -54,7 +54,7 @@ describe("environment setup", function() {
     [ "cowsay", "cowthink" ].forEach(function(command) {
       it(command + " exists", function() {
         try {
-          child_process.execSync("type -p a" + command + " 2>/dev/null");
+          child_process.execSync("type -p " + command + " 2>/dev/null");
         }
         catch (err) {
           if (force) {
