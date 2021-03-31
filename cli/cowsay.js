@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 "use strict";
 
-var utils = require("./utils");
+var cli = require(".");
 
 
 // Parse and execute arguments
-utils.execArgs(utils.parseArgs("say"));
+cli.execArgs(cli.parseArgs("say"));
