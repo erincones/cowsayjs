@@ -10,9 +10,9 @@
  */
 export declare interface CowFace {
   /** Eyes of the cow */
-  eyes: string;
+  eyes?: string;
   /** Tongue of the cow */
-  tongue: string;
+  tongue?: string;
 }
 
 /**
