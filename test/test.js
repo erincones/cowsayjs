@@ -8,6 +8,23 @@ var mode = require("../lib/mode");
 var cows = require("../cows");
 
 
+/**
+ * Cow face test
+ *
+ * @typedef {Object} CowFaceTest
+ * @property {string} name Test name
+ * @property {(string | undefined)[]} prop Face property
+ */
+
+/**
+ * Cow action test
+ *
+ * @typedef {Object} CowActionTest
+ * @property {import("../lib/box").CowAction} [lib] Cow action option
+ * @property {string} command Original cowsay command
+ */
+
+
 // Standard message for short tests
 var msg = process.env.MSG_TEST || "moo";
 
@@ -21,6 +38,7 @@ describe("environment setup", function() {
   });
 
 
+  // Force and skip flags
   var force = process.env.FORCE_TESTS === "1";
   var skip = false;
 
@@ -29,8 +47,6 @@ describe("environment setup", function() {
     if (skip) {
       process.env.SKIP_ACTION_TESTS = "1";
       process.env.SKIP_CORRAL_TESTS = "1";
-      process.env.SKIP_MODE_TESTS = "1";
-      process.env.SKIP_FACE_TESTS = "1";
       process.env.SKIP_WRAP_TESTS = "1";
     }
   });
@@ -80,40 +96,20 @@ describe("cow actions", function() {
   });
 
 
-  // Built-in
-  describe("packge functions comparison", function() {
-    it("get the same output from moo and cowsay", function() {
-      var say = lib.cowsay(msg);
-      var noargs = lib.moo(msg);
-      var forced = lib.moo(msg, { action: "say" });
+  it("get the same output from moo and cowsay", function() {
+    var say = lib.cowsay(msg);
+    var noargs = lib.moo(msg);
+    var forced = lib.moo(msg, { action: "say" });
 
-      assert.strictEqual(noargs, say);
-      assert.strictEqual(forced, say);
-    });
-
-    it("can get the same output from moo and cowthink", function() {
-      var think = lib.cowthink(msg);
-      var forced = lib.moo(msg, { action: "think" });
-
-      assert.strictEqual(forced, think);
-    });
+    assert.strictEqual(noargs, say);
+    assert.strictEqual(forced, say);
   });
 
-  // Original
-  describe("original commands and package functions comparison", function() {
-    it("gets the same output from cowsayjs and cowsay", function() {
-      var cowsay = child_process.execSync("cowsay " + msg).toString();
-      var cowsayjs = lib.cowsay(msg) + "\n";
+  it("can get the same output from moo and cowthink", function() {
+    var think = lib.cowthink(msg);
+    var forced = lib.moo(msg, { action: "think" });
 
-      assert.strictEqual(cowsayjs, cowsay);
-    });
-
-    it("gets the same output from cowthinkjs and cowthink", function() {
-      var cowthink = child_process.execSync("cowthink " + msg).toString();
-      var cowthinkjs = lib.cowthink(msg) + "\n";
-
-      assert.strictEqual(cowthinkjs, cowthink);
-    });
+    assert.strictEqual(forced, think);
   });
 });
 
@@ -127,79 +123,117 @@ describe("cows templates integrity", function() {
   });
 
 
+  // Corral
+  /** @type {(import("../cows").Cow | undefined)[]} */
+  var corral = [ undefined ];
+
   cows.corral.forEach(function(cow) {
-    it("match " + cow.name, function() {
-      var cowsay = child_process.execSync("cowsay -f " + cow.name + " " + msg).toString();
-      var cowsayjs = lib.cowsay(msg, { cow: cow.name }) + "\n";
-
-      assert.strictEqual(cowsayjs, cowsay);
-    });
-  });
-});
-
-
-// Predefined modes
-describe("predefined modes", function() {
-  before(function() {
-    if (process.env.SKIP_MODE_TESTS === "1") {
-      this.skip();
-    }
+    corral.push(cow);
   });
 
-
-  mode.modes.forEach(function(mode) {
-    it("match " + mode.name, function() {
-      var arg = mode.id !== "u" ? "-" + mode.id : "";
-      var cowsay = child_process.execSync("cowsay " + arg + " " + msg).toString();
-      var name = lib.cowsay(msg, { mode: mode.name }) + "\n";
-      var id = lib.cowsay(msg, { mode: mode.id }) + "\n";
-
-      assert.strictEqual(name, cowsay);
-      assert.strictEqual(id, cowsay);
-    });
-  });
-});
-
-
-// Faces properties
-describe("face properties", function() {
-  before(function() {
-    if (process.env.SKIP_FACE_TESTS === "1") {
-      this.skip();
-    }
-  });
-
-
-  var tests = [
-    { title: "set a string of length zero",             prop: "" },
-    { title: "set a string of length one",              prop: "x" },
-    { title: "set a string of length two",              prop: "xy" },
-    { title: "set a string of length greater than two", prop: "xyz" },
-    { title: "set a string with only spaces",           prop: "  " },
-    { title: "set a string with one leading space",     prop: " x" },
-    { title: "set a string with one trailing space",    prop: "x " }
+  // Actions
+  /** @type {CowActionTest[]} */
+  var actions = [
+    { lib: "say",   command: "cowsay" },
+    { lib: "think", command: "cowthink" },
   ];
 
-  // Eyes
-  describe("eyes", function() {
-    tests.forEach(function(test) {
-      it(test.title, function() {
-        var cowsay = child_process.execSync("cowsay -e \"" + test.prop + "\" " + msg).toString();
-        var cowsayjs = lib.cowsay(msg, { eyes: test.prop }) + "\n";
+  // Modes
+  /** @type {("id" | "name")[]} */
+  var modeIds = [ "id", "name" ];
 
-        assert.strictEqual(cowsayjs, cowsay);
-      });
-    });
+  /** @type {(import("../lib/mode").CowMode | undefined)[]} */
+  var modes = [ undefined ];
+
+  mode.modes.forEach(function(mode) {
+    modes.push(mode);
   });
 
-  // Tongue
-  describe("tongue", function() {
-    tests.forEach(function(test) {
-      it(test.title, function() {
-        var cowsay = child_process.execSync("cowsay -T \"" + test.prop + "\" " + msg).toString();
-        var cowsayjs = lib.cowsay(msg, { tongue: test.prop }) + "\n";
+  // Faces
+  var faceIds = [ undefined, "e", "T", "eT" ];
 
-        assert.strictEqual(cowsayjs, cowsay);
+  /** @type {CowFaceTest[]} */
+  var faces = [
+    { name: "undefined",    prop: [ undefined ] },
+    { name: "empty string", prop: [ "" ] },
+    { name: "whitespaces",  prop: [ " ",  "  " ] },
+    { name: "tabs",         prop: [ "\t", "\t\t" ] },
+    { name: "breaklines",   prop: [ "\n", "\n\n" ] },
+    { name: "mixed spaces", prop: [ " \t", "\t ", " \n", "\n ", "\t\n", "\n\t" ] },
+    { name: "characters",   prop: [ "x", "xx", "xy", "yx", "xyz" ] }
+  ];
+
+
+  // Compare against original commands
+  corral.forEach(function(cow) {
+    describe(cow && cow.name + ".cow.js" || "undefined", function() {
+      // By cow
+      var argCow = cow !== undefined ? "-f '" + cow.name + "'" : "";
+
+      modes.forEach(function(mode) {
+        modeIds.forEach(function(modeId) {
+          // By mode id and name
+          var libMode = mode && mode[modeId];
+          var argMode = mode && mode.id !== "u" ? " -" + mode.id : "";
+
+          faces.forEach(function(face) {
+            face.prop.forEach(function(prop) {
+              faceIds.forEach(function(faceId) {
+                /** @type {string | undefined} */
+                var libEyes = undefined;
+                /** @type {string | undefined} */
+                var libTongue = undefined;
+                var argEyes = "";
+                var argTongue = "";
+                var escaped = prop !== undefined && JSON.stringify(prop).replace(/^"(.*)"$/, "$$'$1'");
+
+                // By eyes
+                if (faceId === "e" || faceId === "et") {
+                  libEyes = prop;
+                  argEyes = prop !== undefined ? " -e " + escaped : "";
+                }
+
+                // By tongue
+                if (faceId === "t" || faceId === "et") {
+                  libTongue = prop;
+                  argTongue = prop !== undefined ? " -T " + escaped : "";
+                }
+
+
+                actions.forEach(function(action) {
+                  // By action
+                  var argMsg = JSON.stringify(msg);
+                  var args = [ argCow, argMode, argEyes, argTongue ].join(" ").trim();
+                  var command = [ "echo -e", argMsg, "|", action.command, args ].join(" ");
+                  var opt = {
+                    cow: cow && cow.name,
+                    mode: libMode,
+                    eyes: libEyes,
+                    tongue: libTongue,
+                    action: action.lib
+                  };
+
+                  var expression = "";
+                  expression += mode && mode.name || "";
+                  expression +=
+                    libEyes !== undefined ? " with eyes" + JSON.stringify(libEyes) +
+                      (libTongue !== undefined ? " and tongue " + JSON.stringify(libTongue) : "") :
+                      libTongue !== undefined ? " with tongue " + JSON.stringify(libTongue) : "";
+
+
+                  // Compare cows
+                  it(action.lib + " " + argMsg + " " + expression, function() {
+                    var cowsay = child_process.execSync(command).toString();
+                    var cowsayjs = lib.moo(msg, opt) + "\n";
+
+                    var info = "\n\tcommand: \"" + command + "\"\n\toptions: " + JSON.stringify(opt);
+                    assert.strictEqual(cowsayjs, cowsay, info);
+                  });
+                });
+              });
+            });
+          });
+        });
       });
     });
   });
