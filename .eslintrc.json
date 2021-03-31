@@ -30,6 +30,12 @@
         "@typescript-eslint/semi": "error",
         "@typescript-eslint/quotes": [ "error", "backtick" ]
       }
+    },
+    {
+      "files": [ "test/**/*" ],
+      "env": {
+        "mocha": true
+      }
     }
   ]
 }

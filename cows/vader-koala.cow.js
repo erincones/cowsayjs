@@ -11,12 +11,12 @@ function render(action) {
     "   " + a +  "\n" +
     "    " + a + "        .\n" +
     "     .---.  //\n" +
-    "    Y|o o|Y//\n" +
-    "   /_(i=i)K/\n" +
-    "   ~()~*~()~\n" +
-    "    (_)-(_)\n" +
-    "     Darth\n" +
-    "     Vader\n" +
+    "    Y|o o|Y// \n" +
+    "   /_(i=i)K/ \n" +
+    "   ~()~*~()~  \n" +
+    "    (_)-(_)   \n\n" +
+    "     Darth \n" +
+    "     Vader    \n" +
     "     koala        "
   );
 }

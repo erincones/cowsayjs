@@ -20,7 +20,7 @@ export declare type CowAction = `say` | `think`;
  * @param wrap Word wrap column
  * @returns The action box
  */
-export declare function perform(action?: CowAction, message?: string, wrap?: number | false | null): string;
+export declare function perform(action?: CowAction, message?: string, wrap?: string | number | boolean | null): string;
 
 /**
  * Build the say box

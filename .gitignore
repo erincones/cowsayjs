@@ -1,5 +1,8 @@
-# Dependencies
+# dependencies
 node_modules/
 
-# Packs
+# .env file
+.env
+
+# packs
 *.tgz

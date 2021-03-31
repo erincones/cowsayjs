@@ -9,8 +9,8 @@ function render(action, eyes) {
   var e = fix.fixFace(eyes, "oo");
 
   return (
-    "          " + a + "      (__)\n" +
-    "           " + a + "     /" + e + "|\n" +
+    "          " + a + "      (__)      \n" +
+    "           " + a + "     /" + e + "|  \n" +
     "            " + a + "   (_\"_)*+++++++++*\n" +
     "                   //I#\\\\\\\\\\\\\\\\I\\\n" +
     "                   I[I|I|||||I I `\n" +

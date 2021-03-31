@@ -19,7 +19,7 @@ export declare interface CowOptions {
   /** Custom cow tongue */
   tongue?: string;
   /** Where the message should be wrapped */
-  wrap?: number | false | null;
+  wrap?: string | number | boolean | null;
 }
 
 /**
