@@ -1,9 +1,9 @@
 # cowsayjs
 
 ```Text
- _____
+ _____ 
 < moo >
- -----
+ ----- 
         \   ^__^
          \  (oo)\_______
             (__)\       )\/\
@@ -64,20 +64,24 @@ The `js` suffix avoid collisions with the classic commands. When you are ready,
 just run the commands with the message and some options.
 
 ```Text
-$ cowsayjs -f small I need money
- ______________
-< I need money >
- --------------
+$ cowsayjs -f small I need a real job
+ __________________ 
+< I need a real job >
+ ------------------ 
        \   ,__,
         \  (oo)____
            (__)    )\
               ||--|| *
 ```
+
+
+You can also pipe the output of any command as the message for your cow.
+
 ```Text
-$ moojs -r Everything is gonna be alright
- ________________________________
+$ echo Everything is gonna be alright | moojs -r
+ ________________________________ 
 ( Everything is gonna be alright )
- --------------------------------
+ -------------------------------- 
         o   ^__^
          o  (oo)\_______
             (__)\       )\/\
@@ -94,13 +98,13 @@ main three functions in two ways.
 // ES5
 var cowsayjs = require("cowsayjs");
 
-console.log(cowsayjs.moo("hoho"));
+console.log(cowsayjs.moo("can you see me?"));
 ```
 ```JavaScript
 // ES6
 const { cowsay, cowthink, moo } from "cowsayjs";
 
-console.log(cowsay(`hi`));
+console.log(cowsay(`will anyone read this?`));
 ```
 
 The three functions can recieve two parameters, the message and the options. The
@@ -150,7 +154,7 @@ available. Use the basename of the files to set the cow property and print that
 cow.
 
 ```JavaScript
-cowsay("anybody will read this?", {
+cowsay("english is not my native language", {
   cow: "three-eyes",
   mode: "w" // You can use the full name "wired"
   tongue: "U "
