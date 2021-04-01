@@ -8,6 +8,16 @@ declare module "*.cow" {
   export const name: string;
 
   /**
+   * Default eyes when empty string is provided
+   */
+  export const eyes: string | undefined;
+
+  /**
+   * Default tongue when empty string is provied
+   */
+  export const tongue: string | undefined;
+
+  /**
    * Renderer function
    *
    *
