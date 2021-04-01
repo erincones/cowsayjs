@@ -22,7 +22,7 @@ commands to ensure the maximum fidelity.
 
 ## Install
 
-A nodejs package is available.
+A [nodejs package](https://www.npmjs.com/package/cowsayjs) is available.
 
 ```Shell
 npm i cowsayjs
@@ -63,7 +63,7 @@ thinking cow, instead a talking cow.
 The `js` suffix avoid collisions with the classic commands. When you are ready,
 just run the commands with the message and some options.
 
-```Shell
+```Text
 $ cowsayjs -f small I need money
  ______________
 < I need money >
@@ -73,7 +73,7 @@ $ cowsayjs -f small I need money
            (__)    )\
               ||--|| *
 ```
-```Shell
+```Text
 $ moojs -r Everything is gonna be alright
  ________________________________
 ( Everything is gonna be alright )
