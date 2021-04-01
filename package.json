@@ -1,6 +1,6 @@
 {
   "name": "cowsayjs",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A nodejs clone of the classic cowsay and cowthink cli commands",
   "main": "lib/index.js",
   "scripts": {
@@ -18,7 +18,6 @@
     "cowsayjs": "cli/cowsay.js",
     "cowthinkjs": "cli/cowthink.js"
   },
-  "types": "types/index.d.ts",
   "files": [
     "cli/",
     "cows/",
