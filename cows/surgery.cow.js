@@ -1,13 +1,8 @@
 "use strict";
 
-var fix = require("./fix");
 
-
-/** @type {import(".").CowRenderer} */
-function render(action, eyes) {
-  var a = fix.fixAction(action);
-  var e = fix.fixFace(eyes, "oo");
-
+/** @type {import(".").CowStrictRenderer} */
+function render(a, e) {
   return (
     "          " + a + "           \\  / \n" +
     "           " + a + "           \\/  \n" +

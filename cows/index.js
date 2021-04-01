@@ -12,12 +12,114 @@
  */
 
 /**
- * Cow
+ * Cow renderer function
  *
- * @typedef {Object} Cow
- * @property {string} name Cow name
- * @property {CowRenderer} render Renderer function
+ * @callback CowStrictRenderer
+ * @param {string} action Action
+ * @param {string} eyes Eyes
+ * @param {string} tongue Tongue
+ * @returns {string} Final cow
+ * @see CowRenderer
  */
+
+
+/**
+ * Cow base
+ *
+ * @package
+ * @typedef {Object} CowBase
+ * @property {string} name Cow name
+ * @property {string} [eyes] Default eyes
+ * @property {string} [tongue] Default tongue
+ */
+
+/**
+ * Cow strict renderer property
+ *
+ * @package
+ * @typedef {Object} CowStrictRendererProp
+ * @property {CowStrictRenderer} render Strict renderer function;
+ */
+
+/**
+ * Cow renderer property
+ *
+ * @package
+ * @typedef {Object} CowRendererProp
+ * @property {CowRenderer} render Renderer function;
+ */
+
+/**
+ * Cow strict template
+ *
+ * @typedef {CowBase & CowStrictRendererProp} CowStrict
+ */
+
+/**
+ * Cow template
+ *
+ * @typedef {CowBase & CowRendererProp} Cow
+ */
+
+
+/**
+ * Truncate string to the given length
+ *
+ * @param {string | undefined} str String to truncate
+ * @param {number} len Maximum length
+ * @returns {string} Truncated string
+ */
+function truncate(str, len) {
+  return typeof str === "string" ? str.slice(0, len) : "";
+}
+
+
+/**
+ * Force cow value to the given lenght at least
+ *
+ * @param {string | undefined} value Cow value
+ * @param {string | undefined} empty Default value for empty value
+ * @param {string | undefined} undef Default value for undefined value
+ * @param {number} len Maximum length
+ * @returns {string} Fixed value
+ * @package
+ */
+function fix(value, empty, undef, len) {
+  if (typeof value !== "string") {
+    return truncate(undef, len);
+  }
+
+  if (value.length === 0) {
+    return truncate(empty, len);
+  }
+
+  return truncate(value, len);
+}
+
+
+/**
+ * Get cow from file
+ *
+ * @param {string} path Path of the cow file
+ * @returns {Cow} A deep copy of the cow
+ */
+function cowParser(path) {
+  /** @type {CowStrict} */
+  var cow = require(path);
+
+  return {
+    name: cow.name,
+    eyes: cow.eyes,
+    tongue: cow.tongue,
+    render: function(action, eyes, tongue) {
+      var a = fix(action, undefined, undefined, 1);
+      var e = fix(eyes, cow.eyes, "oo", 2);
+      var t = fix(tongue, cow.tongue, "  ", 2);
+
+      return cow.render(a, e, t);
+    }
+  };
+}
 
 
 /**
@@ -77,15 +179,7 @@ var corral = [
   "./vader.cow",
   "./vader-koala.cow",
   "./www.cow"
-].map(function(template) {
-  /** @type {Cow} */
-  var cow = require(template);
-
-  return {
-    name: cow.name,
-    render: cow.render
-  };
-});
+].map(cowParser);
 
 
 /**
@@ -123,5 +217,6 @@ function getCow(name) {
  */
 module.exports = {
   corral: corral,
+  cowParser: cowParser,
   getCow: getCow
 };
