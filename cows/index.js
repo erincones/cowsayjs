@@ -100,13 +100,10 @@ function fix(value, empty, undef, len) {
 /**
  * Get cow from file
  *
- * @param {string} path Path of the cow file
+ * @param {CowStrict} cow Path of the cow file
  * @returns {Cow} A deep copy of the cow
  */
-function cowParser(path) {
-  /** @type {CowStrict} */
-  var cow = require(path);
-
+function cowParser(cow) {
   return {
     name: cow.name,
     eyes: cow.eyes,
@@ -132,53 +129,53 @@ function cowParser(path) {
  * @package
  */
 var corral = [
-  "./default.cow",
-  "./beavis.zen.cow",
-  "./blowfish.cow",
-  "./bong.cow",
-  "./bud-frogs.cow",
-  "./bunny.cow",
-  "./cheese.cow",
-  "./cower.cow",
-  "./daemon.cow",
-  "./dragon-and-cow.cow",
-  "./dragon.cow",
-  "./elephant-in-snake.cow",
-  "./elephant.cow",
-  "./eyes.cow",
-  "./flaming-sheep.cow",
-  "./ghostbusters.cow",
-  "./head-in.cow",
-  "./hellokitty.cow",
-  "./kiss.cow",
-  "./kitty.cow",
-  "./koala.cow",
-  "./kosh.cow",
-  "./luke-koala.cow",
-  "./meow.cow",
-  "./milk.cow",
-  "./moofasa.cow",
-  "./moose.cow",
-  "./mutilated.cow",
-  "./ren.cow",
-  "./satanic.cow",
-  "./sheep.cow",
-  "./skeleton.cow",
-  "./small.cow",
-  "./sodomized.cow",
-  "./stegosaurus.cow",
-  "./stimpy.cow",
-  "./supermilker.cow",
-  "./surgery.cow",
-  "./telebears.cow",
-  "./three-eyes.cow",
-  "./turkey.cow",
-  "./turtle.cow",
-  "./tux.cow",
-  "./udder.cow",
-  "./vader.cow",
-  "./vader-koala.cow",
-  "./www.cow"
+  require("./default.cow"),
+  require("./beavis.zen.cow"),
+  require("./blowfish.cow"),
+  require("./bong.cow"),
+  require("./bud-frogs.cow"),
+  require("./bunny.cow"),
+  require("./cheese.cow"),
+  require("./cower.cow"),
+  require("./daemon.cow"),
+  require("./dragon-and-cow.cow"),
+  require("./dragon.cow"),
+  require("./elephant-in-snake.cow"),
+  require("./elephant.cow"),
+  require("./eyes.cow"),
+  require("./flaming-sheep.cow"),
+  require("./ghostbusters.cow"),
+  require("./head-in.cow"),
+  require("./hellokitty.cow"),
+  require("./kiss.cow"),
+  require("./kitty.cow"),
+  require("./koala.cow"),
+  require("./kosh.cow"),
+  require("./luke-koala.cow"),
+  require("./meow.cow"),
+  require("./milk.cow"),
+  require("./moofasa.cow"),
+  require("./moose.cow"),
+  require("./mutilated.cow"),
+  require("./ren.cow"),
+  require("./satanic.cow"),
+  require("./sheep.cow"),
+  require("./skeleton.cow"),
+  require("./small.cow"),
+  require("./sodomized.cow"),
+  require("./stegosaurus.cow"),
+  require("./stimpy.cow"),
+  require("./supermilker.cow"),
+  require("./surgery.cow"),
+  require("./telebears.cow"),
+  require("./three-eyes.cow"),
+  require("./turkey.cow"),
+  require("./turtle.cow"),
+  require("./tux.cow"),
+  require("./udder.cow"),
+  require("./vader.cow"),
+  require("./vader-koala.cow"),
+  require("./www.cow")
 ].map(cowParser);
 
 
