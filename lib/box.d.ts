@@ -2,6 +2,8 @@
  * Build the action boxs for the cow message
  */
 
+import { CowOptions } from ".";
+
 
 /**
  * The cow action
@@ -20,7 +22,7 @@ export declare type CowAction = `say` | `think`;
  * @param wrap Word wrap column
  * @returns The action box
  */
-export declare function perform(action?: CowAction, message?: string, wrap?: string | number | boolean | null): string;
+export declare function perform(action?: CowAction, message?: string, wrap?: CowOptions["wrap"]): string;
 
 /**
  * Build the say box
