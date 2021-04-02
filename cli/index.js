@@ -69,7 +69,7 @@ function getArg(token, j, argv, i) {
  */
 function printHelp() {
   // Version
-  var version = "0.3.5";
+  var version = "0.3.6";
 
   // Get current script
   var script = process.argv[1].replace(/\\/g, "/");
@@ -185,35 +185,24 @@ function parseArgs(action) {
         var opt = token[j];
 
         switch (opt) {
-          // Show help
+          // Boolean options
           case "h": args.help = true; return args;
-
-          // List cow names
           case "l": args.list = true; break;
-
-          // No line break
-          case "n": args.wrap = null; break;
+          case "n": args.wrap = false; break;
+          case "r": args.action = action || "think"; break;
 
           // Options with arguments
           case "e": case "f": case "T": case "W": {
-            // Parse data
             var parsed = getArg(token, j, argv, i);
             j = token.length;
             i = parsed.next;
 
             switch (opt) {
-              // Eyes
               case "e": args.eyes = parsed.data; break;
-
-              // Cow file
               case "f": args.cow = parsed.data; break;
-
-              // Tongue
               case "T": args.tongue = parsed.data; break;
-
-              // Wrap column
               case "W":
-                if (args.wrap !== null) {
+                if (args.wrap !== false) {
                   args.wrap = parseInt(parsed.data);
                 }
             }
@@ -221,17 +210,10 @@ function parseArgs(action) {
           }
 
           default:
-            // Reflexive
-            if (opt === "r" && action === undefined) {
-              args.action = "think";
-            }
-
-            // Check modes
-            else if (modes.indexOf(opt) !== -1) {
+            // Mode options
+            if (modes.indexOf(opt) !== -1) {
               args.mode = opt;
             }
-
-            // Unknown option
             else {
               process.stderr.write("Unknown option: " + opt + "\n");
             }
