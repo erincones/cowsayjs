@@ -123,7 +123,7 @@ interface CowFullOptions {
   tongue?: string;
   /** Where the message should be wrapped */
   wrap?: string | number | boolean | null;
-/** Cow action */
+  /** Cow action */
   action?: `say` | `think`;
 }
 ```
