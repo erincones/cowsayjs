@@ -184,102 +184,47 @@ describe("cow modes", function() {
   });
 
 
-  // Modes
-  /** @type {("id" | "name")[]} */
-  var modeIds = [ "id", "name" ];
-
-  /** @type {(import("../lib/mode").CowModeData | undefined)[]} */
-  var modes = [ undefined ];
-
-  mode.modes.forEach(function(mode) {
-    modes.push(mode);
-  });
-
   // Faces
-  var faceIds = [ undefined, "e", "T", "eT" ];
-
-  /** @type {CowFaceTest[]} */
   var faces = [
-    { name: "undefined",    prop: [ undefined ] },
-    { name: "empty string", prop: [ "" ] },
-    { name: "whitespaces",  prop: [ " ",  "  " ] },
-    { name: "tabs",         prop: [ "\t", "\t\t" ] },
-    { name: "breaklines",   prop: [ "\n", "\n\n" ] },
-    { name: "mixed spaces", prop: [ " \t", "\t ", " \n", "\n ", "\t\n", "\n\t" ] },
-    { name: "characters",   prop: [ "x", "xx", "xy", "yx", "xyz" ] }
+    undefined, "",
+    "\t", "\n", "\t\n", "\n\t",
+    "x", "xy", "yx", "xyz"
   ];
 
   // Mesage
   var argMsg = unescape(msg);
 
-  /** @type {string[]} */
-  var commands = [];
-
 
   // Build faces
-  modes.forEach(function(mode) {
-    modeIds.forEach(function(modeId) {
+  mode.modes.forEach(function(mode) {
+    it("print the " + mode.name + " mode", function() {
       // By mode id and name
-      var libMode = mode && mode[modeId];
+      var libMode = mode && mode.id;
       var argMode = mode && mode.id !== "u" ? " -" + mode.id : "";
 
-      faces.forEach(function(face) {
-        face.prop.forEach(function(prop) {
-          faceIds.forEach(function(faceId) {
-            /** @type {string | undefined} */
-            var libEyes = undefined;
-            /** @type {string | undefined} */
-            var libTongue = undefined;
-            var argEyes = "";
-            var argTongue = "";
-            var escaped = prop !== undefined && unescape(prop);
-
-            // By eyes
-            if (faceId === "e" || faceId === "eT") {
-              libEyes = prop;
-              argEyes = prop !== undefined ? " -e " + escaped : "";
-            }
-
-            // By tongue
-            if (faceId === "T" || faceId === "eT") {
-              libTongue = prop;
-              argTongue = prop !== undefined ? " -T " + escaped : "";
-            }
+      faces.forEach(function(prop) {
+        var libEyes = prop;
+        var libTongue = prop;
+        var argEyes = prop !== undefined ? "-e " + unescape(prop) : "";
+        var argTongue = prop !== undefined ? "-T " + unescape(prop) : "";
 
 
-            // Parse arguments and options
-            var args = [ argMode, argEyes, argTongue ].join(" ").trim();
-            var command = [ "echo", argMsg, "| cowsay" , args ].join(" ");
-            var opt = {
-              mode: libMode,
-              eyes: libEyes,
-              tongue: libTongue
-            };
-
-            // Test title
-            var testTitle = "perform ";
-            testTitle += (mode && mode.name || "undefined") + " mode";
-            testTitle +=
-              libEyes !== undefined ? " with eyes" + JSON.stringify(libEyes) +
-                (libTongue !== undefined ? " and tongue " + JSON.stringify(libTongue) : "") :
-                libTongue !== undefined ? " with tongue " + JSON.stringify(libTongue) : "";
+        // Parse arguments and options
+        var args = [ argMode, argEyes, argTongue ].join(" ").trim();
+        var command = [ "echo", argMsg, "| cowsay" , args ].join(" ");
+        var opt = {
+          mode: libMode,
+          eyes: libEyes,
+          tongue: libTongue
+        };
 
 
-            // Compare command
-            it(testTitle, function() {
-              if (!commands.includes(command)) {
-                commands.push(command);
-                this.skip();
-              }
+        // Compare cows
+        var cowsay = trimLinesEnd(cli(command));
+        var moosay = trimLinesEnd(lib.moo(msg, opt));
 
-              var cowsay = trimLinesEnd(cli(command));
-              var moosay = trimLinesEnd(lib.moo(msg, opt));
-
-              var info = "\n\tcommand: \"" + command + "\"\n\toptions: " + JSON.stringify(opt);
-              assert.strictEqual(moosay, cowsay, info);
-            });
-          });
-        });
+        var info = "\n\tcommand: \"" + command + "\"\n\toptions: " + JSON.stringify(opt);
+        assert.strictEqual(moosay, cowsay, info);
       });
     });
   });
@@ -452,30 +397,45 @@ describe("word wrap", function() {
 
   // String tests
   var msgs = [
+    // eslint-disable-next-line no-extra-parens
+    { wrap: /** @type {never} */({}), msg: /** @type {never} */({}) },
     { wrap: undefined, msg: "" },
     { wrap: undefined, msg: " x" },
     { wrap: undefined, msg: " x\n\nx\n\n" },
     { wrap: false, msg: undefined },
     { wrap: null, msg: " \t\n " },
+    { wrap: true, msg: " \t\n " },
     { wrap: 1, msg: "x" },
     { wrap: 1, msg: "x\n\nx" },
     { wrap: 3, msg: "xxx" },
     { wrap: 3, msg: "xx " },
     { wrap: 3, msg: "xxxx " },
-    { wrap: 3, msg: "xxxxx" }
+    { wrap: 3, msg: "xxxxx" },
+    { wrap: "3", msg: msg },
+    { wrap: "{3", msg: msg }
   ];
 
   msgs.forEach(function(msg) {
     // Parse wrap
     /** @type {import("../lib").CowOptions["wrap"]} */
     var argWrap;
+    var invalid = false;
 
     switch (msg.wrap) {
+      case true:
       case undefined: argWrap = ""; break;
       case null:
       case false: argWrap = "-n"; break;
-      default: argWrap = "-W " + msg.wrap;
+      default:
+        argWrap = "-W " + msg.wrap;
+
+        switch (typeof msg.wrap) {
+          case "string": invalid = isNaN(parseInt(msg.wrap)); break;
+          case "number": invalid = isNaN(msg.wrap); break;
+          default: invalid = true;
+        }
     }
+
 
     // Mesage and command
     var argMsg = msg.msg === undefined ? "" : unescape(msg.msg);
@@ -490,11 +450,14 @@ describe("word wrap", function() {
 
     // Compare cows
     it(testTitle, function() {
-      var cowsay = trimLinesEnd(cli(command));
       var cowsayjs = trimLinesEnd(lib.moo(msg.msg, opt));
-      var info = "\n\tcommand: \"" + command + "\"\n\toptions: " + JSON.stringify(opt);
 
-      assert.strictEqual(cowsayjs, cowsay, info);
+      if (!invalid) {
+        var cowsay = trimLinesEnd(cli(command));
+        var info = "\n\tcommand: \"" + command + "\"\n\toptions: " + JSON.stringify(opt);
+
+        assert.strictEqual(cowsayjs, cowsay, info);
+      }
     });
   });
 });
