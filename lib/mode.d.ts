@@ -47,7 +47,7 @@ export declare const modes: CowModeData[];
  * @param face The cow face
  * @returns The matching cow mode
  */
-export declare function faceMode(face: CowFace): CowModeData;
+export declare function faceMode(face: CowFace): CowMode;
 
 /**
  * Get the face for the giving mode
