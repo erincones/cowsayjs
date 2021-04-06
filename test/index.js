@@ -147,9 +147,41 @@ describe("cow actions", function() {
 
   it("think with moo and cowthink", function() {
     var cowthink = lib.cowthink(msg, { tongue: "U " });
-    var moothink = lib.moo(msg, {  tongue: "U ", action: "think" });
+    var moothink = lib.moo(msg, { tongue: "U ", action: "think" });
 
     assert.strictEqual(moothink, cowthink);
+  });
+
+
+  it("replace wrong arguments with valid values", function() {
+    var func = function() {};
+
+    /** @type {any[][]} */
+    var args = [
+      [],
+      [ undefined, null ],
+      [ undefined, false ],
+      [ undefined, func ],
+      [ undefined, [] ],
+      [ undefined, 1 ],
+      [ undefined, "" ],
+      [ undefined, {} ],
+      [ null,      {} ],
+      [ false,     {} ],
+      [ func,      {} ],
+      [ [],        {} ],
+      [ 1,         {} ],
+      [ "",        {} ],
+      [ { dummy: 0 } ],
+      [ { cow: null, mode: null, eyes: null, tongue: null, wrap: func, action: null } ]
+    ];
+
+    // Generate cows
+    args.forEach(function(arg) {
+      lib.moo(arg[0], arg[1]);
+      lib.cowsay(arg[0], arg[1]);
+      lib.cowthink(arg[0], arg[1]);
+    });
   });
 
   it("perform say and think actions in empty box without cow", function() {
@@ -213,6 +245,7 @@ describe("cow modes", function() {
         var args = [ argMode, argEyes, argTongue ].join(" ").trim();
         var command = [ "echo", argMsg, "| cowsay" , args ].join(" ");
         var opt = {
+          message: msg,
           mode: libMode,
           eyes: libEyes,
           tongue: libTongue
@@ -221,7 +254,7 @@ describe("cow modes", function() {
 
         // Compare cows
         var cowsay = trimLinesEnd(cli(command));
-        var moosay = trimLinesEnd(lib.moo(msg, opt));
+        var moosay = trimLinesEnd(lib.moo(opt));
 
         var info = "\n\tcommand: \"" + command + "\"\n\toptions: " + JSON.stringify(opt);
         assert.strictEqual(moosay, cowsay, info);
@@ -345,6 +378,7 @@ describe("cows templates", function() {
         var args = [ argCow, argEyes, argTongue ].join(" ").trim();
         var command = [ "echo", argMsg, "| cowsay" , args ].join(" ");
         var opt = {
+          message: msg,
           cow: cow && cow.name,
           eyes: libEyes,
           tongue: libTongue
@@ -353,7 +387,7 @@ describe("cows templates", function() {
 
         // Compare cows
         var cowsay = trimLinesEnd(cli(command));
-        var cowsayjs = trimLinesEnd(lib.moo(msg, opt));
+        var cowsayjs = trimLinesEnd(lib.moo(opt));
 
         if (cowsay.length !== 0) {
           var info = "\n\tcommand: \"" + command + "\"\n\toptions: " + JSON.stringify(opt);
@@ -398,59 +432,58 @@ describe("word wrap", function() {
   // String tests
   var msgs = [
     // eslint-disable-next-line no-extra-parens
-    { wrap: /** @type {never} */({}), msg: /** @type {never} */({}) },
-    { wrap: undefined, msg: "" },
-    { wrap: undefined, msg: " x" },
-    { wrap: undefined, msg: " x\n\nx\n\n" },
-    { wrap: false, msg: undefined },
-    { wrap: null, msg: " \t\n " },
-    { wrap: true, msg: " \t\n " },
-    { wrap: 1, msg: "x" },
-    { wrap: 1, msg: "x\n\nx" },
-    { wrap: 3, msg: "xxx" },
-    { wrap: 3, msg: "xx " },
-    { wrap: 3, msg: "xxxx " },
-    { wrap: 3, msg: "xxxxx" },
-    { wrap: "3", msg: msg },
-    { wrap: "{3", msg: msg }
+    { wrap: /** @type {never} */({}), message: /** @type {never} */({}) },
+    { wrap: undefined, message: "" },
+    { wrap: undefined, message: " x" },
+    { wrap: undefined, message: " x\n\nx\n\n" },
+    { wrap: false,     message: undefined },
+    { wrap: null,      message: " \t\n " },
+    { wrap: true,      message: " \t\n " },
+    { wrap: 1,         message: "x" },
+    { wrap: 1,         message: "x\n\nx" },
+    { wrap: 3,         message: "xxx" },
+    { wrap: 3,         message: "xx " },
+    { wrap: 3,         message: "xxxx " },
+    { wrap: 3,         message: "xxxxx" },
+    { wrap: "3",       message: msg },
+    { wrap: "{3",      message: msg }
   ];
 
-  msgs.forEach(function(msg) {
+  msgs.forEach(function(opt) {
     // Parse wrap
     /** @type {import("../lib").CowOptions["wrap"]} */
     var argWrap;
     var invalid = false;
 
-    switch (msg.wrap) {
+    switch (opt.wrap) {
       case true:
       case undefined: argWrap = ""; break;
       case null:
       case false: argWrap = "-n"; break;
       default:
-        argWrap = "-W " + msg.wrap;
+        argWrap = "-W " + opt.wrap;
 
-        switch (typeof msg.wrap) {
-          case "string": invalid = isNaN(parseInt(msg.wrap)); break;
-          case "number": invalid = isNaN(msg.wrap); break;
+        switch (typeof opt.wrap) {
+          case "string": invalid = isNaN(parseInt(opt.wrap)); break;
+          case "number": invalid = isNaN(opt.wrap); break;
           default: invalid = true;
         }
     }
 
 
     // Mesage and command
-    var argMsg = msg.msg === undefined ? "" : unescape(msg.msg);
+    var argMsg = opt.message === undefined ? "" : unescape(opt.message);
     var command = ["echo", argMsg, "| cowsay", argWrap].join(" ");
-    var opt = { wrap: msg.wrap };
 
     // Test title
     var testTitle =
-      "use wrap " + JSON.stringify(msg.wrap) +
-      " to print " + JSON.stringify(msg.msg);
+      "use wrap " + JSON.stringify(opt.wrap) +
+      " to print " + JSON.stringify(opt.message);
 
 
     // Compare cows
     it(testTitle, function() {
-      var cowsayjs = trimLinesEnd(lib.moo(msg.msg, opt));
+      var cowsayjs = trimLinesEnd(lib.moo(opt));
 
       if (!invalid) {
         var cowsay = trimLinesEnd(cli(command));

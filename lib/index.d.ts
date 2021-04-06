@@ -27,10 +27,21 @@ export declare interface CowOptions {
  *
  * The common cowsay and cowthink options with the action property.
  */
-export declare interface CowFullOptions extends CowOptions {
+export declare interface CowMooOptions extends CowOptions {
   /** Cow action */
   action?: CowAction;
 }
+
+/**
+ * Options for the moo function
+ *
+ * The common cowsay and cowthink options with the action property.
+ */
+export declare interface CowAllOptions extends CowMooOptions {
+  /** Cow message */
+  message?: string;
+}
+
 
 
 /**
@@ -45,7 +56,23 @@ export declare interface CowFullOptions extends CowOptions {
  * @param options Cow options with action
  * @returns ASCII cow with the message
  */
-export declare function moo(message?: string, options?: CowFullOptions): string;
+export declare function moo(message?: string, options?: CowMooOptions): string;
+
+/**
+ * Build an ASCII cow with the message
+ *
+ * Default values:
+ *  - action: "say"
+ *  - eyes: "oo"
+ *  - wrap: 40
+ *
+ * @param message Message to show
+ * @param options Cow options with action
+ * @returns ASCII cow with the message
+ */
+export declare function moo(options?: CowAllOptions): string;
+
+
 
 /**
  * Build an ASCII cow saying the message
@@ -61,6 +88,20 @@ export declare function moo(message?: string, options?: CowFullOptions): string;
 export declare function cowsay(message?: string, options?: CowOptions): string;
 
 /**
+ * Build an ASCII cow saying the message
+ *
+ * Default values:
+ *  - eyes: "oo"
+ *  - wrap: 40
+ *
+ * @param message Message to say
+ * @param options Cow options
+ * @returns ASCII cow saying the message
+ */
+export declare function cowtsay(options?: CowAllOptions): string;
+
+
+/**
  * Build an ASCII cow thinking the message
  *
  * Default values:
@@ -72,3 +113,17 @@ export declare function cowsay(message?: string, options?: CowOptions): string;
  * @returns ASCII cow thinking the message
  */
 export declare function cowthink(message?: string, options?: CowOptions): string;
+
+
+/**
+ * Build an ASCII cow thinking the message
+ *
+ * Default values:
+ *  - eyes: "oo"
+ *  - wrap: 40
+ *
+ * @param message Message to think
+ * @param options Cow options
+ * @returns ASCII cow thinking the message
+ */
+export declare function cowthink(options?: CowAllOptions): string;

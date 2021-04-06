@@ -12,12 +12,13 @@ var cows = require("../cows");
  * @property {boolean} [help] Show help
  * @property {boolean} [list] List available cows
  * @property {string} message Message
+ * @package
  */
 
 /**
  * Full parsed cow arguments
  *
- * @typedef {import("../lib").CowFullOptions & CLIArgs} CowArgs
+ * @typedef {import("../lib").CowAllOptions & CLIArgs} CowArgs
  */
 
 /**
@@ -26,10 +27,15 @@ var cows = require("../cows");
  * @typedef {Object} ArgData
  * @property {string} data Data
  * @property {number} next Next argument list index
+ * @package
  */
 
 
-/** Known modes */
+/**
+ * Known modes
+ *
+ * @package
+ */
 var modes = mode.modes.slice(1).map(function(known) { return known.id; });
 
 
@@ -41,6 +47,7 @@ var modes = mode.modes.slice(1).map(function(known) { return known.id; });
  * @param {string[]} argv Argument list
  * @param {number} i Current argument index
  * @returns {ArgData} Parsed argument data
+ * @package
  */
 function getArg(token, j, argv, i) {
   // Get rest of token
@@ -66,10 +73,12 @@ function getArg(token, j, argv, i) {
 
 /**
  * Print scripts help
+ *
+ * @package
  */
 function printHelp() {
   // Version
-  var version = "0.3.6";
+  var version = "1.0.0";
 
   // Get current script
   var script = process.argv[1].replace(/\\/g, "/");
@@ -134,6 +143,8 @@ function printHelp() {
 
 /**
  * Print cows list
+ *
+ * @package
  */
 function printCorral() {
   var corral = cows.corral;
@@ -250,7 +261,7 @@ function execArgs(args) {
 
   // Print cow with shell message
   else if (process.stdin.isTTY === true || args.message.length !== 0) {
-    process.stdout.write(lib.moo(args.message, args) + "\n");
+    process.stdout.write(lib.moo(args) + "\n");
   }
 
   // Print cow with piped message
@@ -263,7 +274,7 @@ function execArgs(args) {
     }).on("end", function() {
       // Remove empty final line and print cow
       args.message = args.message.replace(/\n$/, "");
-      process.stdout.write(lib.moo(args.message, args) + "\n");
+      process.stdout.write(lib.moo(args) + "\n");
     });
   }
 }
