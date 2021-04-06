@@ -1,6 +1,6 @@
 {
   "name": "cowsayjs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A nodejs clone of the classic cowsay and cowthink cli commands",
   "main": "lib/index.js",
   "scripts": {
@@ -42,7 +42,7 @@
   "bugs": {
     "url": "https://github.com/erincones/cowsayjs/issues"
   },
-  "homepage": "https://github.com/erincones/cowsayjs#readme",
+  "homepage": "https://nextmoo.vercel.app/",
   "devDependencies": {
     "@types/mocha": "^8.2.2",
     "@types/node": "^14.14.37",
