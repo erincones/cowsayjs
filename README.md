@@ -13,8 +13,9 @@
 
 A nodejs clone of the classic cowsay and cowthink cli commands.
 
-Coded in pure ES5 for maximum support, but well documented with JSDoc and
-TypeScript declaration files to use in modern develop environments.
+Coded from scratch in pure ES5 for maximum support, zero dependencies and
+well documented with JSDoc and TypeScript declaration files to use in modern
+develop environments.
 
 Full coverage tests have been made comparing the outpus with the original cowsay
 commands to ensure the maximum fidelity.
@@ -28,18 +29,17 @@ Create your custom cows without install or code anything with
 
 ## Install
 
-A [nodejs package](https://www.npmjs.com/package/cowsayjs) is available.
+Just install the [nodejs package](https://www.npmjs.com/package/cowsayjs).
 
 ```Shell
 npm i cowsayjs
 ```
 
-Uses the `-g` option to install globally on your system and make available the
-cli commands. Maybe you need run with `sudo` for that if you are using an unix
-system.
+Uses the `-g` option to install globally on your system and **make available the
+cli commands**. Maybe you need run with `sudo` if you are using an unix system.
 
 As this is a zero dependencies package, you can also clone the repository, but
-you have to setup the script manually to execute the cli commands.
+you have to setup the scripts manually to execute the cli commands.
 
 ```Shell
 git clone https://github.com/erincones/cowsayjs.git
@@ -48,7 +48,7 @@ git clone https://github.com/erincones/cowsayjs.git
 
 ## Usage
 
-You can use as cli commands or a dependency of your back-end or front-end
+You can use it as cli commands or a dependency of your back-end or front-end
 projects.
 
 
@@ -62,11 +62,10 @@ will be available on your system:
  - `moojs`
 
 They have exactly the same behavior of the original `cowsay` and `cowthink`
-commands, if they are installed in your system, run `cowsay -h` to print the
-help.
+commands, once installed, run `cowsayjs -h` to print the help.
 
 ```Text
-moojs, cowsayjs, cowthinkjs v1.0.1
+moojs, cowsayjs, cowthinkjs v1.0.2
 Copyright (c) 2021 Erick Rincones
 Licensed under the MIT License
 
@@ -134,8 +133,8 @@ $ echo Everything is gonna be alright | moojs -r
 
 ### NodeJS dependency
 
-Depending on your project setup, after install the package, you can import the
-main three functions in two ways.
+Depending on your project setup, you can import the main three functions in two
+ways.
 
 ```JavaScript
 // ES5
@@ -175,20 +174,21 @@ interface CowOptions {
 }
 ```
 
-The `CowMooOptions` extends the base options and add the `action` property that
+`CowMooOptions` extends the base options and adds the `action` property that
 could be `say` or `think` to decide the cow action. This property only works
 for the `moo` function and is ignored by the `cowsay` and `cowthink` functions.
 
-The `CowAllOption` extneds the `CowMooOptions` and add the `message` property
+`CowAllOption` extends the `CowMooOptions` and adds the `message` property
 to pass the message to the cow. If the functions are called with two parameters,
-the first is considered the message and the second the options, so any value
-for `options.message` is ignored.
+the first one is considered the message and the second one the options, so any
+value for `options.message` is ignored.
 
-To disable the text wrapping, set `false` or `null` the `wrap` property. The
-default value is `40`.
+To disable the text wrapping, set `false` or `null` the `wrap` property. Default
+value is `40`.
 
 The default value for the eyes is `"oo"` and `"  "` for the tongue. Just set any
-string to change it or one of the [predefined modes](lib/mode.js#L36).
+string to change it or one of the [predefined modes](lib/mode.js#L36) using
+the `id` or `name` property to set the `mode` option.
 
 ```JavaScript
 modes = [
@@ -204,15 +204,16 @@ modes = [
 ];
 ```
 
-You can use the `id` or `name` property to set the `mode` option.
+Unknown values falls back to the `u` mode, wich is the default face.
 
 Check the [cows/](cows/) directory to see all the available cows files. Set the
-`cow` property of the options with the basename of one cow file to use it.
+`cow` property of the options with the name of one cow file without `.cow.js`
+to use it.
 
 ### Examples
 
 ```JavaScript
-cowsay("english is not my native language", {
+cowsay("English is not my native language", {
   cow: "three-eyes",
   mode: "w",
   tongue: "U "
@@ -220,7 +221,7 @@ cowsay("english is not my native language", {
 ```
 ```Text
  ___________________________________
-< english is not my native language >
+< English is not my native language >
  -----------------------------------
         \  ^___^
          \ (OOO)\_______
@@ -238,9 +239,10 @@ moo({
 });
 ```
 ```Text
- __________________________________________
-( I have to sleep 2021-04-06T07:01:31.035Z )
- ------------------------------------------
+ __________________________
+( I have to sleep          )
+( 2021-04-08T06:27:51.776Z )
+ --------------------------
         o   ^__^
          o  (@@)\_______
             (__)\       )\/\
@@ -251,7 +253,7 @@ moo({
 ## Utilities
 
 They are some aditional useful functions available. The modern code editors
-should show you the docummentation from the JDocs and TypeScript declaration
+should show you the docummentation from the JDocs or TypeScript declaration
 files.
 
 ```JavaScript

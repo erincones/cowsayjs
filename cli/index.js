@@ -78,7 +78,7 @@ function getArg(token, j, argv, i) {
  */
 function printHelp() {
   // Version
-  var version = "1.0.1";
+  var version = "1.0.2";
 
   // Get current script
   var script = process.argv[1].replace(/\\/g, "/");
@@ -133,7 +133,8 @@ function printHelp() {
 
   // Extra
   var extra =
-    "Full documentation and source code: https://github.com/erincones/cowsayjs\n";
+    "Full documentation and source code: https://github.com/erincones/cowsayjs\n" +
+    "Online version: https://nextmoo.vercel.app\n";
 
 
   // Print help
