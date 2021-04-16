@@ -65,7 +65,7 @@ They have exactly the same behavior of the original `cowsay` and `cowthink`
 commands, once installed, run `cowsayjs -h` to print the help.
 
 ```Text
-moojs, cowsayjs, cowthinkjs v1.0.2
+moojs, cowsayjs, cowthinkjs v1.0.3
 Copyright (c) 2021 Erick Rincones
 Licensed under the MIT License
 
@@ -144,7 +144,7 @@ console.log(cowsayjs.moo("can you see me?"));
 ```
 ```JavaScript
 // ES6
-const { cowsay, cowthink, moo } from "cowsayjs";
+import { cowsay, cowthink, moo } from "cowsayjs";
 
 console.log(cowsay(`will anyone read this?`));
 ```
