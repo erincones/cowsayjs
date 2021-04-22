@@ -62,7 +62,8 @@ will be available on your system:
  - `moojs`
 
 They have exactly the same behavior of the original `cowsay` and `cowthink`
-commands, once installed, run `cowsayjs -h` to print the help.
+commands, once installed, run `cowsayjs -h`, `cowthinkjs -h` or `moojs -h` to
+print the help.
 
 ```Text
 moojs, cowsayjs, cowthinkjs v1.0.3
@@ -262,14 +263,14 @@ import { corral } from "cowsayjs/cows";
 
 import {
   modes,    // List of modes
-  faceMode, // Get the mode for the given eyes and tongue
-  modeFace  // Get the face for the given mode
+  faceMode, // Get mode for the given eyes and tongue
+  modeFace  // Get face for the given mode
 } from "cowsayjs/lib/mode";
 
 import {
   perform,  // Generate a say or think box
   say,      // Generate a say box
-  think,    // Generate a think box
+  think     // Generate a think box
 } from "cowsayjs/lib/box";
 ```
 
