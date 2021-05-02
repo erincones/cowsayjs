@@ -35,7 +35,7 @@ Just install the [nodejs package](https://www.npmjs.com/package/cowsayjs).
 npm i cowsayjs
 ```
 
-Uses the `-g` option to install globally on your system and **make available the
+Use the `-g` option to install globally on your system and **make available the
 cli commands**. Maybe you need run with `sudo` if you are using an unix system.
 
 As this is a zero dependencies package, you can also clone the repository, but
