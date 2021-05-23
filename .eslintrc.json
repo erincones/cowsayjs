@@ -13,7 +13,7 @@
     "no-extra-parens": "error",
     "strict": [ "error", "global" ],
     "quotes": [ "error", "double" ],
-    "indent": [ "error", 2, { "SwitchCase": 1 } ]
+    "indent": [ "error", 2, { "SwitchCase": 1, "flatTernaryExpressions": true } ]
   },
   "overrides": [
     {
