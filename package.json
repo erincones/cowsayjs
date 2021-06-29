@@ -1,6 +1,6 @@
 {
   "name": "cowsayjs",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A nodejs clone of the classic cowsay and cowthink cli commands",
   "main": "lib/index.js",
   "scripts": {
@@ -9,6 +9,7 @@
     "cowsay": "cli/cowsay.js",
     "cowthink": "cli/cowthink.js",
     "test": "mocha",
+    "mocha": "mocha",
     "nyc": "nyc",
     "tsc": "tsc",
     "lint": "eslint"
@@ -44,12 +45,12 @@
   "homepage": "https://nextmoo.vercel.app/",
   "devDependencies": {
     "@types/mocha": "^8.2.2",
-    "@types/node": "^14.14.37",
-    "@typescript-eslint/eslint-plugin": "^4.21.0",
-    "@typescript-eslint/parser": "^4.21.0",
-    "eslint": "^7.23.0",
-    "mocha": "^8.3.2",
+    "@types/node": "^15.12.5",
+    "@typescript-eslint/eslint-plugin": "^4.28.1",
+    "@typescript-eslint/parser": "^4.28.1",
+    "eslint": "^7.29.0",
+    "mocha": "^9.0.1",
     "nyc": "^15.1.0",
-    "typescript": "^4.2.4"
+    "typescript": "^4.3.4"
   }
 }

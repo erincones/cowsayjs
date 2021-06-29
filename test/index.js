@@ -8,26 +8,17 @@ var box = require("../lib/box");
 var mode = require("../lib/mode");
 var cows = require("../cows");
 
-
-/**
- * Cow face test
- *
- * @typedef {Object} CowFaceTest
- * @property {string} name Test name
- * @property {(string | undefined)[]} prop Face property
- */
-
-/**
- * Cow action test
- *
- * @typedef {Object} CowActionTest
- * @property {import("../lib/box").CowAction} [lib] Cow action option
- * @property {string} command Original cowsay command
- */
+var env = process.env;
 
 
 // Standard message for short tests
-var msg = process.env.MSG_TEST || "moo";
+var MSG = env.MSG_TEST || "moo";
+
+// Cowsay command
+var COWSAY = env.COWSAY || "cowsay";
+
+// Cowthink command
+var COWTHINK = env.COWTHINK || "cowthink";
 
 
 /**
@@ -37,14 +28,19 @@ var msg = process.env.MSG_TEST || "moo";
  * @returns {string} Command output or empty string if an error occours
  */
 function cli(command) {
-  try {
-    return child_process.execSync(command).toString();
-  }
-  catch (err) {
-    process.stderr.write(err);
-    return "";
-  }
+  return child_process.execSync(command).toString();
 }
+
+/**
+ * Check if the given command exists
+ *
+ * @param {string} command Command to check
+ * @returns Absolute command path
+ */
+function exists(command) {
+  return cli("type -p " + command + " 2>/dev/null");
+}
+
 
 /**
  * Trim right every line of the string
@@ -69,60 +65,58 @@ function unescape(str) {
 }
 
 
-// System setup
-describe("environment setup", function() {
+/**
+ * Build cow with moosay and compare with the given command
+ *
+ * @param {lib.CowMooOptions} opt Moo options
+ * @param {string | false} command CLI command
+ * @param {string} info Error information
+ */
+function test(opt, command, info) {
+  // Create cow
+  try {
+    var moosay = trimLinesEnd(lib.moo(opt));
+  }
+  catch (err) {
+    process.stderr.write(info);
+    throw err;
+  }
+
+  // Compare cows
+  if (command) {
+    var cowsay = trimLinesEnd(cli(command));
+
+    assert.strictEqual(moosay, cowsay, info);
+  }
+}
+
+
+// Required commands
+describe("required commands", function() {
   before(function() {
-    if (process.env.SKIP_ENVIRONMENT_TESTS === "1") {
+    if (env.SKIP_TESTS_COMMANDS === "1") {
       this.skip();
     }
   });
 
-
-  // Force and skip flags
-  var force = process.env.FORCE_TESTS === "1";
-  var skip = false;
-
-  // Skip all tests for not valid environment
-  afterEach(function() {
-    if (skip) {
-      process.env.SKIP_ACTION_TESTS = "1";
-      process.env.SKIP_CORRAL_TESTS = "1";
-      process.env.SKIP_WRAP_TESTS = "1";
+  it("should exists the " + COWSAY + " command", function() {
+    try {
+      exists(COWSAY);
     }
-  });
-
-
-  // Operative system
-  it("is unix like system", function() {
-    var win = "win32";
-
-    if (force) {
-      assert.notStrictEqual(process.platform, win);
-    }
-    else if (process.platform === win) {
-      skip = true;
+    catch (err) {
+      COWSAY = "";
       this.skip();
     }
   });
 
-  // Required commands
-  describe("required commands", function() {
-    [ "cowsay", "cowthink" ].forEach(function(command) {
-      it(command + " exists", function() {
-        try {
-          child_process.execSync("type -p " + command + " 2>/dev/null");
-        }
-        catch (err) {
-          if (force) {
-            throw err;
-          }
-          else {
-            skip = true;
-            this.skip();
-          }
-        }
-      });
-    });
+  it("should exists the " + COWTHINK + " command", function() {
+    try {
+      exists(COWTHINK);
+    }
+    catch (err) {
+      COWTHINK = "";
+      this.skip();
+    }
   });
 });
 
@@ -130,30 +124,30 @@ describe("environment setup", function() {
 // Cow actions
 describe("cow actions", function() {
   before(function() {
-    if (process.env.SKIP_ACTION_TESTS === "1") {
+    if (env.SKIP_TESTS_ACTION === "1") {
       this.skip();
     }
   });
 
 
-  it("say with moo and cowsay", function() {
-    var cowsay = lib.cowsay(msg);
-    var moo = lib.moo(msg);
-    var moosay = lib.moo(msg, { action: "say" });
+  it("should get the same output with moo and cowsay", function() {
+    var cowsay = lib.cowsay(MSG);
+    var moo = lib.moo(MSG);
+    var moosay = lib.moo(MSG, { action: "say" });
 
     assert.strictEqual(moo, cowsay);
     assert.strictEqual(moosay, cowsay);
   });
 
-  it("think with moo and cowthink", function() {
-    var cowthink = lib.cowthink(msg, { tongue: "U " });
-    var moothink = lib.moo(msg, { tongue: "U ", action: "think" });
+  it("should get the same output with moo and cowthink", function() {
+    var cowthink = lib.cowthink(MSG, { tongue: "U " });
+    var moothink = lib.moo(MSG, { tongue: "U ", action: "think" });
 
     assert.strictEqual(moothink, cowthink);
   });
 
 
-  it("replace wrong arguments with valid values", function() {
+  it("should replace wrong arguments with valid values", function() {
     var func = function() {};
 
     /** @type {any[][]} */
@@ -184,7 +178,7 @@ describe("cow actions", function() {
     });
   });
 
-  it("perform say and think actions in empty box without cow", function() {
+  it("should perform say and think actions in empty box without cow", function() {
     var say = trimLinesEnd(box.say());
     var think = trimLinesEnd(box.think());
     var emptySay = trimLinesEnd(" _ \n<   >\n - ");
@@ -195,14 +189,28 @@ describe("cow actions", function() {
   });
 
 
-  it("emulate original cowsay and cowthink", function() {
-    var cowsay = trimLinesEnd(cli("cowsay " + msg));
-    var cowthink = trimLinesEnd(cli("cowthink " + msg));
-    var moosay = trimLinesEnd(lib.moo(msg));
-    var moothink = trimLinesEnd(lib.moo(msg, { action: "think" }));
+  it("should emulate the original " + COWSAY + " command", function() {
+    if (COWSAY) {
+      var moosay = trimLinesEnd(lib.moo(MSG));
+      var cowsay = trimLinesEnd(cli(COWSAY + " " + MSG));
 
-    assert.strictEqual(moosay, cowsay);
-    assert.strictEqual(moothink, cowthink);
+      assert.strictEqual(moosay, cowsay);
+    }
+    else {
+      this.skip();
+    }
+  });
+
+  it("should emulate the original " + COWTHINK + " command", function() {
+    if (COWTHINK) {
+      var moothink = trimLinesEnd(lib.moo(MSG, { action: "think" }));
+      var cowthink = trimLinesEnd(cli(COWTHINK + " " + MSG));
+
+      assert.strictEqual(moothink, cowthink);
+    }
+    else {
+      this.skip();
+    }
   });
 });
 
@@ -210,7 +218,7 @@ describe("cow actions", function() {
 // Cow modes
 describe("cow modes", function() {
   before(function() {
-    if (process.env.SKIP_MODE_TESTS === "1") {
+    if (env.SKIP_TESTS_MODE === "1") {
       this.skip();
     }
   });
@@ -224,12 +232,12 @@ describe("cow modes", function() {
   ];
 
   // Mesage
-  var argMsg = unescape(msg);
+  var argMsg = unescape(MSG);
 
 
   // Build faces
   mode.modes.forEach(function(mode) {
-    it("print the " + mode.name + " mode", function() {
+    it("should print the " + mode.name + " mode", function() {
       // By mode id and name
       var libMode = mode && mode.id;
       var argMode = mode && mode.id !== "u" ? " -" + mode.id : "";
@@ -240,24 +248,19 @@ describe("cow modes", function() {
         var argEyes = prop !== undefined ? "-e " + unescape(prop) : "";
         var argTongue = prop !== undefined ? "-T " + unescape(prop) : "";
 
-
         // Parse arguments and options
         var args = [ argMode, argEyes, argTongue ].join(" ").trim();
-        var command = [ "echo", argMsg, "| cowsay" , args ].join(" ");
+        var command = [ "echo", argMsg, "|" , COWSAY, args ].join(" ");
         var opt = {
-          message: msg,
+          message: MSG,
           mode: libMode,
           eyes: libEyes,
           tongue: libTongue
         };
 
-
-        // Compare cows
-        var cowsay = trimLinesEnd(cli(command));
-        var moosay = trimLinesEnd(lib.moo(opt));
-
         var info = "\n\tcommand: \"" + command + "\"\n\toptions: " + JSON.stringify(opt);
-        assert.strictEqual(moosay, cowsay, info);
+
+        test(opt, COWSAY && command, info);
       });
     });
   });
@@ -266,7 +269,7 @@ describe("cow modes", function() {
   // Query modes
   describe("mode faces querying", function() {
     mode.modes.forEach(function(known) {
-      it("look for the " + JSON.stringify(known.name) + " mode", function() {
+      it("should find the right face for the " + JSON.stringify(known.name) + " mode", function() {
         var byId = mode.modeFace(known.id);
         var byName = mode.modeFace(known.name);
 
@@ -277,7 +280,7 @@ describe("cow modes", function() {
       });
     });
 
-    it("look for invalid mode", function() {
+    it("should get the default face for not valid mode", function() {
       var undef = mode.modeFace();
       var empty = mode.modeFace("");
 
@@ -294,7 +297,7 @@ describe("cow modes", function() {
       var eyes = JSON.stringify(known.eyes);
       var tongue = JSON.stringify(known.tongue);
 
-      it("look the mode for the eyes " + eyes + " and tongue " + tongue, function() {
+      it("should find the mode for the eyes " + eyes + " and tongue " + tongue, function() {
         var face = { eyes: known.eyes, tongue: known.tongue };
         var byFace = mode.faceMode(face);
 
@@ -303,7 +306,7 @@ describe("cow modes", function() {
       });
     });
 
-    it("look mode for invalid face", function() {
+    it("should find the default mode for not valid face", function() {
       // eslint-disable-next-line no-extra-parens
       var invalid = mode.faceMode(/** @type {never} */(null));
       var undef = mode.faceMode({});
@@ -323,7 +326,7 @@ describe("cow modes", function() {
 // Corral of cows
 describe("cows templates", function() {
   before(function() {
-    if (process.env.SKIP_CORRAL_TESTS === "1") {
+    if (env.SKIP_TESTS_CORRAL === "1") {
       this.skip();
     }
   });
@@ -359,12 +362,12 @@ describe("cows templates", function() {
   ];
 
   // Mesage
-  var argMsg = unescape(msg);
+  var argMsg = unescape(MSG);
 
 
   // Compare against original commands
   corral.forEach(function(cow) {
-    it("generate the " + (cow && cow.name || "undefined") + " cow", function() {
+    it("should generate the " + (cow && cow.name || "undefined") + " cow", function() {
       // By cow
       var argCow = cow !== undefined ? "-f '" + cow.name + "'" : "";
 
@@ -374,25 +377,19 @@ describe("cows templates", function() {
         var argEyes = face.eyes !== undefined ? "-e " + unescape(face.eyes) : "";
         var argTongue = face.tongue !== undefined ? "-T " + unescape(face.tongue) : "";
 
-        // By action
+        // By face
         var args = [ argCow, argEyes, argTongue ].join(" ").trim();
-        var command = [ "echo", argMsg, "| cowsay" , args ].join(" ");
+        var command = [ "echo", argMsg, "|", COWSAY, args ].join(" ");
         var opt = {
-          message: msg,
+          message: MSG,
           cow: cow && cow.name,
           eyes: libEyes,
           tongue: libTongue
         };
 
+        var info = "\n\tcommand: \"" + command + "\"\n\toptions: " + JSON.stringify(opt);
 
-        // Compare cows
-        var cowsay = trimLinesEnd(cli(command));
-        var cowsayjs = trimLinesEnd(lib.moo(opt));
-
-        if (cowsay.length !== 0) {
-          var info = "\n\tcommand: \"" + command + "\"\n\toptions: " + JSON.stringify(opt);
-          assert.strictEqual(cowsayjs, cowsay, info);
-        }
+        test(opt, COWSAY && command, info);
       });
     });
   });
@@ -401,14 +398,14 @@ describe("cows templates", function() {
   // Querying cows
   describe("cow templates querying", function() {
     cows.corral.forEach(function(cow) {
-      it("look for the cow " + JSON.stringify(cow.name), function() {
+      it("should find the cow " + JSON.stringify(cow.name), function() {
         var byName = cows.getCow(cow.name);
 
         assert.strictEqual(byName.name, cow.name);
       });
     });
 
-    it("look mode for invalid face", function() {
+    it("should get the default cow for not valid cows", function() {
       // eslint-disable-next-line no-extra-parens
       var invalid = cows.getCow(/** @type {never} */(null));
       var empty = cows.getCow("");
@@ -423,7 +420,7 @@ describe("cows templates", function() {
 // Word wraping
 describe("word wrap", function() {
   before(function() {
-    if (process.env.SKIP_WRAP_TESTS === "1") {
+    if (env.SKIP_TESTS_WRAP === "1") {
       this.skip();
     }
   });
@@ -445,8 +442,8 @@ describe("word wrap", function() {
     { wrap: 3,         message: "xx " },
     { wrap: 3,         message: "xxxx " },
     { wrap: 3,         message: "xxxxx" },
-    { wrap: "3",       message: msg },
-    { wrap: "{3",      message: msg }
+    { wrap: "3",       message: MSG },
+    { wrap: "{3",      message: MSG }
   ];
 
   msgs.forEach(function(opt) {
@@ -473,24 +470,18 @@ describe("word wrap", function() {
 
     // Mesage and command
     var argMsg = opt.message === undefined ? "" : unescape(opt.message);
-    var command = ["echo", argMsg, "| cowsay", argWrap].join(" ");
+    var command = [ "echo", argMsg, "|", COWSAY, argWrap ].join(" ");
 
-    // Test title
-    var testTitle =
-      "use wrap " + JSON.stringify(opt.wrap) +
+    // Test information and title
+    var info = "\n\tcommand: \"" + command + "\"\n\toptions: " + JSON.stringify(opt);
+    var title =
+      "should use wrap " + JSON.stringify(opt.wrap) +
       " to print " + JSON.stringify(opt.message);
 
 
     // Compare cows
-    it(testTitle, function() {
-      var cowsayjs = trimLinesEnd(lib.moo(opt));
-
-      if (!invalid) {
-        var cowsay = trimLinesEnd(cli(command));
-        var info = "\n\tcommand: \"" + command + "\"\n\toptions: " + JSON.stringify(opt);
-
-        assert.strictEqual(cowsayjs, cowsay, info);
-      }
+    it(title, function() {
+      test(opt, !invalid && COWSAY && command, info);
     });
   });
 });

@@ -1,3 +1,12 @@
+[![](https://img.shields.io/npm/v/cowsayjs)][npm]
+[![](https://img.shields.io/npm/dt/cowsayjs)][npm]
+[![](https://img.shields.io/github/stars/erincones/cowsayjs)][github]
+[![](https://img.shields.io/github/issues-raw/erincones/cowsayjs)][issues]
+[![](https://img.shields.io/github/last-commit/erincones/cowsayjs)][commits]
+[![](https://img.shields.io/github/languages/code-size/erincones/cowsayjs)][github]
+[![](https://img.shields.io/npm/l/cowsayjs)][LICENSE]
+
+
 # cowsayjs
 
 ```Text
@@ -24,12 +33,12 @@ commands to ensure the maximum fidelity.
 ## Online example
 
 Create your custom cows without install or code anything with
-[Next Moo!](https://nextmoo.vercel.app)
+[Next Moo!][web]
 
 
 ## Install
 
-Just install the [nodejs package](https://www.npmjs.com/package/cowsayjs).
+Just install the [nodejs package][npm].
 
 ```Shell
 npm i cowsayjs
@@ -98,7 +107,7 @@ Full documentation and source code: https://github.com/erincones/cowsayjs
 ```
 
 You can get more details from the official documentation of the orirignal cowsay
-here [cowsay(1)](https://linux.die.net/man/1/cowsay). Note that `moojs` command
+here [cowsay(1)][cowsay(1)]. Note that `moojs` command
 includes the optional argument `-r` to generate a reflexive thinking cow,
 instead a talking cow.
 
@@ -188,7 +197,7 @@ To disable the text wrapping, set `false` or `null` the `wrap` property. Default
 value is `40`.
 
 The default value for the eyes is `"oo"` and `"  "` for the tongue. Just set any
-string to change it or one of the [predefined modes](lib/mode.js#L36) using
+string to change it or one of the [predefined modes][modes] using
 the `id` or `name` property to set the `mode` option.
 
 ```JavaScript
@@ -207,7 +216,7 @@ modes = [
 
 Unknown values falls back to the `u` mode, wich is the default face.
 
-Check the [cows/](cows/) directory to see all the available cows files. Set the
+Check the [cows/][cows] directory to see all the available cows files. Set the
 `cow` property of the options with the name of one cow file without `.cow.js`
 to use it.
 
@@ -284,6 +293,20 @@ tests.
 
 ## License
 
-Licensed under [the MIT license](LICENSE).
+Licensed under [the MIT license][LICENSE].
 
 Share and enjoy!
+
+
+<!-- References -->
+[npm]: https://www.npmjs.com/package/cowsayjs
+[github]: https://github.com/erincones/cowsayjs
+[commits]: https://github.com/erincones/cowsayjs/graphs/commit-activity
+[issues]: https://github.com/erincones/cowsayjs/issues
+
+[web]: https://nextmoo.vercel.app
+[cowsay(1)]: https://linux.die.net/man/1/cowsay
+
+[modes]: lib/mode.js#L36
+[cows]: cows/
+[LICENSE]: LICENSE
