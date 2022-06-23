@@ -1,6 +1,6 @@
 {
   "name": "cowsayjs",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A nodejs clone of the classic cowsay and cowthink cli commands",
   "main": "lib/index.js",
   "scripts": {

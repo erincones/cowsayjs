@@ -99,7 +99,7 @@ export declare function cowsay(message?: string, options?: CowOptions): string;
  * @param options Cow options with message
  * @returns ASCII cow saying the message
  */
-export declare function cowtsay(options?: CowAllOptions): string;
+export declare function cowsay(options?: CowAllOptions): string;
 
 
 /**
