@@ -24,7 +24,7 @@ declare function fix(value: string | undefined, def: string | undefined, len: nu
 
 
 /**
- * Cow enderer function
+ * Cow renderer function
  *
  * @callback CowRenderer
  * @param action Action

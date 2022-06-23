@@ -33,9 +33,10 @@ export declare interface CowMooOptions extends CowOptions {
 }
 
 /**
- * Options for the moo function
+ * Options for the moo function with message
  *
- * The common cowsay and cowthink options with the action property.
+ * The common cowsay and cowthink options with the action and message
+ * properties.
  */
 export declare interface CowAllOptions extends CowMooOptions {
   /** Cow message */
@@ -67,7 +68,7 @@ export declare function moo(message?: string, options?: CowMooOptions): string;
  *  - wrap: 40
  *
  * @param message Message to show
- * @param options Cow options with action
+ * @param options Cow options with action and message
  * @returns ASCII cow with the message
  */
 export declare function moo(options?: CowAllOptions): string;
@@ -95,7 +96,7 @@ export declare function cowsay(message?: string, options?: CowOptions): string;
  *  - wrap: 40
  *
  * @param message Message to say
- * @param options Cow options
+ * @param options Cow options with message
  * @returns ASCII cow saying the message
  */
 export declare function cowtsay(options?: CowAllOptions): string;
@@ -123,7 +124,7 @@ export declare function cowthink(message?: string, options?: CowOptions): string
  *  - wrap: 40
  *
  * @param message Message to think
- * @param options Cow options
+ * @param options Cow options with message
  * @returns ASCII cow thinking the message
  */
 export declare function cowthink(options?: CowAllOptions): string;

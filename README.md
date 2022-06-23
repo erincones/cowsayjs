@@ -75,7 +75,7 @@ commands, once installed, run `cowsayjs -h`, `cowthinkjs -h` or `moojs -h` to
 print the help.
 
 ```Text
-moojs, cowsayjs, cowthinkjs v1.0.4
+moojs, cowsayjs, cowthinkjs v1.0.6
 Copyright (c) 2021 Erick Rincones
 Licensed under the MIT License
 
