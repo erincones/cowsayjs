@@ -20,19 +20,19 @@ export declare type CowAction = `o` | `\\`;
  */
 export declare interface Cow {
   /** Cow name */
-  readonly name: string;
+  name: string;
   /** Default eyes for empty string */
-  readonly defEyes?: string;
+  defEyes?: string;
   /** Default tongue for empty string */
-  readonly defTongue?: string;
+  defTongue?: string;
   /** Cow template */
-  readonly template: ReadonlyArray<string>;
+  template: ReadonlyArray<string>;
   /** Action position indexes */
-  readonly actionPos?: ReadonlyArray<Position>;
+  actionPos?: ReadonlyArray<Position>;
   /** Eyes position indexes */
-  readonly eyesPos?: ReadonlyArray<Position>;
+  eyesPos?: ReadonlyArray<Position>;
   /** Tongue position indexes */
-  readonly tonguePos?: ReadonlyArray<Position>;
+  tonguePos?: ReadonlyArray<Position>;
 }
 
 
@@ -41,12 +41,12 @@ export declare interface Cow {
  *
  * The default cow is in the first position.
  */
-export declare const corral: ReadonlyArray<Cow>;
+export declare const corral: ReadonlyArray<Readonly<Cow>>;
 
 /**
  * Custom cows list
  */
-export declare const customCorral: Cow;
+export declare const customCorral: Readonly<Cow>[];
 
 /**
  * Find a cow in the corral by name

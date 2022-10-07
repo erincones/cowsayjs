@@ -18,10 +18,17 @@
  * @package
  */
 
+
 /**
- * Mutable Cow
+ * Cow action
  *
- * @typedef {Object} MutableCow
+ * @typedef {"o" | "\\"} CowAction
+ */
+
+/**
+ * Cow
+ *
+ * @typedef {Object} Cow
  * @property {string} name Cow name
  * @property {string} [defEyes] Default eyes
  * @property {string} [defTongue] Default tongue
@@ -30,20 +37,6 @@
  * @property {ReadonlyArray<Position>} [eyesPos] Eyes position indexes
  * @property {ReadonlyArray<Position>} [tonguePos] Tongue position indexes
  * @package
- */
-
-
-/**
- * Cow action
- *
- * @typedef {"o" | "\\"} CowAction
- */
-
-
-/**
- * Cow
- *
- * @typedef {Readonly<MutableCow>} Cow
  */
 
 
@@ -87,7 +80,7 @@ function fix(value, empty, undef, len) {
  *
  * The default cow is in the first position.
  *
- * @type {ReadonlyArray<Cow>}
+ * @type {ReadonlyArray<Readonly<Cow>>}
  * @constant
  * @package
  */
@@ -144,12 +137,40 @@ var corral = [
 /**
  * Custom cows list
  *
- * @type {Cow[]}
+ * @type {Readonly<Cow>[]}
  * @constant
  * @package
  */
 var customCorral = [];
 
+
+/**
+ * Create a full deep copy of the given cow
+ *
+ * @param {Cow} cow Cow to copy
+ * @returns {Cow} A copy of the given cow
+ */
+function copyCow(cow) {
+  /**
+   * Copy the given position indexes
+   *
+   * @param {Readonly<Position>} pos Position indexes
+   * @returns {Position} A copy of the position indexes
+   */
+  var copier = function(pos) {
+    return [ pos[0], pos[1] ];
+  };
+
+  return {
+    name: cow.name,
+    defEyes: cow.defEyes,
+    defTongue: cow.defTongue,
+    template: cow.template.slice(),
+    actionPos: cow.actionPos ? cow.actionPos.map(copier) : undefined,
+    eyesPos: cow.eyesPos ? cow.eyesPos.map(copier) : undefined,
+    tonguePos: cow.tonguePos ? cow.tonguePos.map(copier) : undefined,
+  };
+}
 
 /**
  * Find a cow in the corral by name
@@ -158,22 +179,30 @@ var customCorral = [];
  * @returns {Cow} Matching cow
  */
 function getCow(name) {
-  // Return the default cow for not valid type
-  if (typeof name !== "string") {
-    return corral[0];
-  }
+  /** @type {Cow | undefined} */
+  var cow;
 
   // Find cow
-  return corral.concat(customCorral).find(function(cow) {
-    return cow.name === name;
-  }) || corral[0];
+  if (typeof name === "string") {
+    cow = corral.concat(customCorral).find(function(cow) {
+      return cow.name === name;
+    });
+  }
+
+  // Get default cow if is not found
+  if (cow === undefined) {
+    cow = corral[0];
+  }
+
+  // Return a copy of the cow
+  return copyCow(cow);
 }
 
 /**
  * Add a new cow to the custom corral
  *
  * @param {Cow} cow New cow to add
- * @returns {boolean} whether the cow could be added
+ * @returns {boolean} Whether the cow could be added
  */
 function addCow(cow) {
   // Check if the cow already exists
@@ -194,7 +223,7 @@ function addCow(cow) {
  * Remove a cow from the custom corral
  *
  * @param {string} name Cow name
- * @returns {Cow | undefined} Matching cow
+ * @returns {Cow | undefined} Removed cow
  */
 function removeCow(name) {
   // Return undefined for not valid string
@@ -269,7 +298,7 @@ function renderCow(cow, action, eyes, tongue) {
  * @module cowsayjs/cows
  */
 module.exports = {
-  corral: corral,
+  corral: corral.map(copyCow),
   customCorral: customCorral,
   getCow: getCow,
   addCow: addCow,

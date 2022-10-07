@@ -32,12 +32,16 @@ var cows = require("../cows");
 
 
 /**
- * Known modes
+ * Get all available cow mode data IDs
  *
- * @package
+ * @returns {string[]}
  */
-var modes = mode.modes.slice(1).map(function(known) { return known.id; });
-
+function getModes() {
+  return mode.modes
+    .slice(1)
+    .concat(mode.customModes)
+    .map(function(mode) { return mode.id; });
+}
 
 /**
  * Get the argument data for the given position of the argument list
@@ -101,7 +105,10 @@ function printHelp() {
     "Usage: " + script + " [options] [message]\n\n";
 
   // Options
-  var modeOpts = modes.join("") + Array(13 - modes.length).join(" ");
+  var modes = getModes().join("");
+  var modeOptsPad = Array(modes.length < 12 ? 12 - modes.length : 15).join(" ");
+  var modeOptsSep = modeOptsPad.length === 15 ? "\n" : " ";
+  var modeOpts = modes + modeOptsSep + modeOptsPad;
   var reflexive = script === "moojs" ?
     "  -r           A reflexive cow will think instead say the message\n" : "";
 
@@ -148,7 +155,7 @@ function printHelp() {
  * @package
  */
 function printCorral() {
-  var corral = cows.corral;
+  var corral = cows.corral.concat(cows.customCorral);
   var i = 0;
 
   do {
@@ -169,6 +176,7 @@ function parseArgs(action) {
   /** @type {CowArgs} */
   var args = { action: action, message: "" };
   var argv = process.argv;
+  var modes = getModes();
   var stop = false;
   var i = 2;
 

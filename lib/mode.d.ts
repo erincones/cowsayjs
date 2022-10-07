@@ -36,7 +36,12 @@ export interface CowModeData extends CowFace, CowMode {}
  *
  * The default mode is in the first position.
  */
-export declare const modes: CowModeData[];
+export declare const modes: ReadonlyArray<Readonly<CowModeData>>;
+
+/**
+ * Custom modes data
+ */
+export declare const customModes: Readonly<CowModeData>[];
 
 
 /**
@@ -58,3 +63,23 @@ export declare function faceMode(face: CowFace): CowMode;
  * @returns The matching cow face
  */
 export declare function modeFace(mode?: string): CowFace;
+
+
+/**
+ * Add a new cow mode data to the custom cow mode data list
+ *
+ * Cow mode data id should match with the first name letter (case sensitive) and
+ * should be different to any existing option.
+ *
+ * @param modeData Cow mode data to add
+ * @returns Whether the cow mode data could be added
+ */
+export declare function addMode(modeData: CowModeData): boolean;
+
+/**
+ * Remove a cow mode data from the custom cow mode data list
+ *
+ * @param id The id or name of the cow mode
+ * @return Removed cow mode data
+ */
+export declare function removeMode(id: string): CowModeData | undefined;

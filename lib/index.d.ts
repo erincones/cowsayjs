@@ -4,6 +4,7 @@
 
 
 import { BoxAction } from "./box";
+import { Cow } from "../cows";
 
 
 /**
@@ -11,7 +12,7 @@ import { BoxAction } from "./box";
  */
 export declare interface CowOptions {
   /** Cow name */
-  cow?: string;
+  cow?: string | Cow;
   /** Cow face mode */
   mode?: string;
   /** Custom cow eyes */
