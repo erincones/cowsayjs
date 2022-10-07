@@ -8,7 +8,7 @@ import { CowOptions } from ".";
 /**
  * The cow action
  */
-export declare type CowAction = `say` | `think`;
+export declare type BoxAction = `say` | `think`;
 
 
 /**
@@ -22,7 +22,7 @@ export declare type CowAction = `say` | `think`;
  * @param wrap Word wrap column
  * @returns The action box
  */
-export declare function perform(action?: CowAction, message?: string, wrap?: CowOptions["wrap"]): string;
+export declare function perform(action?: BoxAction, message?: string, wrap?: CowOptions["wrap"]): string;
 
 /**
  * Build the say box

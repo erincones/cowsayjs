@@ -1,21 +1,18 @@
 "use strict";
 
-
-/** @type {import(".").CowStrictRenderer} */
-function render(a) {
-  return (
-    "  " + a + "\n" +
-    "   " + a + "\n" +
-    "      /\\_)o<\n" +
-    "     |      \\\n" +
-    "     | O . O|\n" +
-    "      \\_____/"
-  );
-}
-
-
 /** @type {import(".").Cow} */
 module.exports = {
   name: "hellokitty",
-  render: render
+  template: [
+    "  \\",
+    "   \\",
+    "      /\\_)o<",
+    "     |      \\",
+    "     | O . O|",
+    "      \\_____/"
+  ],
+  actionPos: [
+    [ 0, 2 ],
+    [ 1, 3 ]
+  ]
 };

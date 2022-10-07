@@ -3,7 +3,7 @@
  */
 
 
-import { CowAction } from "./box";
+import { BoxAction } from "./box";
 
 
 /**
@@ -29,7 +29,7 @@ export declare interface CowOptions {
  */
 export declare interface CowMooOptions extends CowOptions {
   /** Cow action */
-  action?: CowAction;
+  action?: BoxAction;
 }
 
 /**

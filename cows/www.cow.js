@@ -1,20 +1,25 @@
 "use strict";
 
-
-/** @type {import(".").CowStrictRenderer} */
-function render(a, e, t) {
-  return (
-    "        " + a + "   ^__^\n" +
-    "         " + a + "  (" + e + ")\\_______\n" +
-    "            (__)\\       )\\/\\\n" +
-    "             " + t + " ||--WWW |\n" +
-    "                ||     ||"
-  );
-}
-
-
 /** @type {import(".").Cow} */
 module.exports = {
   name: "www",
-  render: render
+  template: [
+    "        \\   ^__^",
+    "         \\  (oo)\\_______",
+    "            (__)\\       )\\/\\",
+    "                ||--WWW |",
+    "                ||     ||"
+  ],
+  actionPos: [
+    [ 0, 8 ],
+    [ 1, 9 ]
+  ],
+  eyesPos: [
+    [ 1, 13 ],
+    [ 1, 14 ]
+  ],
+  tonguePos: [
+    [ 3, 13 ],
+    [ 3, 14 ]
+  ]
 };

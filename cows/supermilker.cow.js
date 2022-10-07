@@ -1,20 +1,25 @@
 "use strict";
 
-
-/** @type {import(".").CowStrictRenderer} */
-function render(a, e, t) {
-  return (
-    "  " + a + "   ^__^\n" +
-    "   " + a + "  (" + e + ")\\_______        ________\n" +
-    "      (__)\\       )\\/\\    |Super |\n" +
-    "       " + t + " ||----W |       |Milker|\n" +
-    "          ||    UDDDDDDDDD|______|"
-  );
-}
-
-
 /** @type {import(".").Cow} */
 module.exports = {
   name: "supermilker",
-  render: render
+  template: [
+    "  \\   ^__^",
+    "   \\  (oo)\\_______        ________",
+    "      (__)\\       )\\/\\    |Super |",
+    "          ||----W |       |Milker|",
+    "          ||    UDDDDDDDDD|______|"
+  ],
+  actionPos: [
+    [ 0, 2 ],
+    [ 1, 3 ]
+  ],
+  eyesPos: [
+    [ 1, 7 ],
+    [ 1, 8 ]
+  ],
+  tonguePos: [
+    [ 3, 7 ],
+    [ 3, 8 ]
+  ]
 };

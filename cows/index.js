@@ -2,63 +2,29 @@
 
 
 /**
- * Cow renderer function
+ * Position index
  *
- * @callback CowRenderer
- * @param {string} [action] Action
- * @param {string} [eyes] Eyes
- * @param {string} [tongue] Tongue
- * @returns {string} Final cow
+ * @typedef {[ number, number ]} Position
  */
 
 /**
- * Cow renderer function
+ * Cow action
  *
- * @callback CowStrictRenderer
- * @param {string} action Action
- * @param {string} eyes Eyes
- * @param {string} tongue Tongue
- * @returns {string} Final cow
- * @see CowRenderer
+ * @typedef {"o" | "\\"} CowAction
  */
 
 
 /**
- * Cow base
+ * Cow
  *
- * @package
- * @typedef {Object} CowBase
+ * @typedef {Object} Cow
  * @property {string} name Cow name
- * @property {string} [eyes] Default eyes
- * @property {string} [tongue] Default tongue
- */
-
-/**
- * Cow strict renderer property
- *
- * @package
- * @typedef {Object} CowStrictRendererProp
- * @property {CowStrictRenderer} render Strict renderer function;
- */
-
-/**
- * Cow renderer property
- *
- * @package
- * @typedef {Object} CowRendererProp
- * @property {CowRenderer} render Renderer function;
- */
-
-/**
- * Cow strict template
- *
- * @typedef {CowBase & CowStrictRendererProp} CowStrict
- */
-
-/**
- * Cow template
- *
- * @typedef {CowBase & CowRendererProp} Cow
+ * @property {string} [defEyes] Default eyes
+ * @property {string} [defTongue] Default tongue
+ * @property {string[]} template Cow template
+ * @property {Position[]} [actionPos] Action position indexes
+ * @property {Position[]} [eyesPos] Eyes position indexes
+ * @property {Position[]} [tonguePos] Tongue position indexes
  */
 
 
@@ -68,11 +34,11 @@
  * @param {string | undefined} str String to truncate
  * @param {number} len Maximum length
  * @returns {string} Truncated string
+ * @package
  */
 function truncate(str, len) {
   return typeof str === "string" ? str.slice(0, len) : "";
 }
-
 
 /**
  * Force cow value to the given lenght at least
@@ -94,28 +60,6 @@ function fix(value, empty, undef, len) {
   }
 
   return truncate(value, len);
-}
-
-
-/**
- * Get cow from file
- *
- * @param {CowStrict} cow Path of the cow file
- * @returns {Cow} A deep copy of the cow
- */
-function cowParser(cow) {
-  return {
-    name: cow.name,
-    eyes: cow.eyes,
-    tongue: cow.tongue,
-    render: function(action, eyes, tongue) {
-      var a = fix(action, undefined, undefined, 1);
-      var e = fix(eyes, cow.eyes, "oo", 2);
-      var t = fix(tongue, cow.tongue, "  ", 2);
-
-      return cow.render(a, e, t);
-    }
-  };
 }
 
 
@@ -176,7 +120,7 @@ var corral = [
   require("./vader.cow"),
   require("./vader-koala.cow"),
   require("./www.cow")
-].map(cowParser);
+];
 
 
 /**
@@ -207,6 +151,38 @@ function getCow(name) {
 }
 
 
+
+/**
+ * Cow renderer function
+ *
+ * @param {Cow} cow Cow to render
+ * @param {CowAction} [action] Action
+ * @param {string} [eyes] Eyes
+ * @param {string} [tongue] Tongue
+ * @returns {string} Rendered cow
+ */
+function renderCow(cow, action, eyes, tongue) {
+  // Copy template
+  var lines = cow.template.slice();
+
+  // Interpolate values
+  [
+    { pos: cow.tonguePos || [], str: fix(tongue, cow.defTongue, "  ", 2) },
+    { pos: cow.eyesPos || [],   str: fix(eyes, cow.defEyes, "oo", 2) },
+    { pos: cow.actionPos || [], str: fix(action, undefined, undefined, 1) },
+  ].forEach(function(val) {
+    var len = val.str.length;
+    val.pos.forEach(function(pos, i) {
+      var char = i < len ? val.str[i] : val.str.slice(-1);
+      var line = lines[pos[0]];
+      lines[pos[0]] = line.slice(0, pos[1]) + char + line.slice(pos[1] + 1);
+    });
+  });
+
+  return lines.join("\n");
+}
+
+
 /**
  * Cows collection
  *
@@ -214,6 +190,6 @@ function getCow(name) {
  */
 module.exports = {
   corral: corral,
-  cowParser: cowParser,
-  getCow: getCow
+  getCow: getCow,
+  renderCow: renderCow
 };

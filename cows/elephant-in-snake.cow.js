@@ -1,23 +1,21 @@
 "use strict";
 
-
-/** @type {import(".").CowStrictRenderer} */
-function render(a) {
-  return (
-    "   " + a + "\n" +
-    "    " + a + "              ....       \n" +
-    "           ........    .      \n" +
-    "          .            .      \n" +
-    "         .             .      \n" +
-    ".........              .......\n" +
-    "..............................\n\n" +
-    "Elephant inside ASCII snake"
-  );
-}
-
-
 /** @type {import(".").Cow} */
 module.exports = {
   name: "elephant-in-snake",
-  render: render
+  template: [
+    "   \\",
+    "    \\              ....       ",
+    "           ........    .      ",
+    "          .            .      ",
+    "         .             .      ",
+    ".........              .......",
+    "..............................",
+    "",
+    "Elephant inside ASCII snake"
+  ],
+  actionPos: [
+    [ 0, 3 ],
+    [ 0, 4 ]
+  ]
 };

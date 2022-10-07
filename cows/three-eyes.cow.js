@@ -1,20 +1,26 @@
 "use strict";
 
-
-/** @type {import(".").CowStrictRenderer} */
-function render(a, e, t) {
-  return (
-    "        " + a + "  ^___^\n" +
-    "         " + a + " (" + e + e.slice(-1) + ")\\_______\n" +
-    "           (___)\\       )\\/\\\n" +
-    "            " + t + "  ||----w |\n" +
-    "                ||     ||"
-  );
-}
-
-
 /** @type {import(".").Cow} */
 module.exports = {
   name: "three-eyes",
-  render: render
+  template: [
+    "        \\  ^___^",
+    "         \\ (ooo)\\_______",
+    "           (___)\\       )\\/\\",
+    "                ||----w |",
+    "                ||     ||"
+  ],
+  actionPos: [
+    [ 0, 8 ],
+    [ 1, 9 ]
+  ],
+  eyesPos: [
+    [ 1, 12 ],
+    [ 1, 13 ],
+    [ 1, 14 ]
+  ],
+  tonguePos: [
+    [ 3, 12 ],
+    [ 4, 13 ]
+  ]
 };

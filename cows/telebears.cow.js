@@ -1,22 +1,29 @@
 "use strict";
 
-
-/** @type {import(".").CowStrictRenderer} */
-function render(a, e, t) {
-  return (
-    "      " + a + "                _\n" +
-    "       " + a + "              (_)   <-- TeleBEARS\n" +
-    "        " + a + "   ^__^       / \\\n" +
-    "         " + a + "  (" + e + ")\\_____/_\\ \\\n" +
-    "            (__)\\  you  ) /\n" +
-    "             " + t + " ||----w ((\n" +
-    "                ||     ||>> "
-  );
-}
-
-
 /** @type {import(".").Cow} */
 module.exports = {
   name: "telebears",
-  render: render
+  template: [
+    "      \\                _",
+    "       \\              (_)   <-- TeleBEARS",
+    "        \\   ^__^       / \\",
+    "         \\  (oo)\\_____/_\\ \\",
+    "            (__)\\  you  ) /",
+    "                ||----w ((",
+    "                ||     ||>> "
+  ],
+  actionPos: [
+    [ 0, 6 ],
+    [ 1, 7 ],
+    [ 2, 8 ],
+    [ 3, 9 ]
+  ],
+  eyesPos: [
+    [ 3, 13 ],
+    [ 3, 14 ]
+  ],
+  tonguePos: [
+    [ 5, 13 ],
+    [ 5, 14 ]
+  ]
 };

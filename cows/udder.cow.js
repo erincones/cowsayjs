@@ -1,24 +1,29 @@
 "use strict";
 
-
-/** @type {import(".").CowStrictRenderer} */
-function render(a, e, t) {
-  return (
-    "  " + a + "\n" +
-    "   " + a + "    (__)               \n" +
-    "        " + e.slice(0, -1) + " " + e.slice(-1) + "\\               \n" +
-    "       ('') \\---------     \n" +
-    "        " + t + "\\           \\    \n" +
-    "           |          |\\   \n" +
-    "           ||---(  )_|| *  \n" +
-    "           ||    UU  ||    \n" +
-    "           ==        ==    "
-  );
-}
-
-
 /** @type {import(".").Cow} */
 module.exports = {
   name: "udder",
-  render: render
+  template: [
+    "  \\",
+    "   \\    (__)",
+    "        o o\\",
+    "       ('') \\---------",
+    "          \\           \\",
+    "           |          |\\",
+    "           ||---(  )_|| *",
+    "           ||    UU  ||",
+    "           ==        =="
+  ],
+  actionPos: [
+    [ 0, 2 ],
+    [ 1, 3 ]
+  ],
+  eyesPos: [
+    [ 2, 8 ],
+    [ 2, 10 ]
+  ],
+  tonguePos: [
+    [ 4, 8 ],
+    [ 4, 9 ]
+  ]
 };

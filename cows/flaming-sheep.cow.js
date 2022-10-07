@@ -1,25 +1,29 @@
 "use strict";
 
-
-/** @type {import(".").CowStrictRenderer} */
-function render(a, e) {
-  return (
-    "  " + a + "            .    .     .   \n" +
-    "   " + a + "      .  . .     `  ,     \n" +
-    "    " + a + "    .; .  : .' :  :  : . \n" +
-    "     " + a + "   i..`: i` i.i.,i  i . \n" +
-    "      " + a + "   `,--.|i |i|ii|ii|i: \n" +
-    "           U" + e + "U\\.'@@@@@@`.||' \n" +
-    "           \\__/(@@@@@@@@@@)'  \n" +
-    "                (@@@@@@@@)    \n" +
-    "                `YY~~~~YY'    \n" +
-    "                 ||    ||     "
-  );
-}
-
-
 /** @type {import(".").Cow} */
 module.exports = {
   name: "flaming-sheep",
-  render: render
+  template: [
+    "  \\            .    .     .   ",
+    "   \\      .  . .     `  ,     ",
+    "    \\    .; .  : .' :  :  : . ",
+    "     \\   i..`: i` i.i.,i  i . ",
+    "      \\   `,--.|i |i|ii|ii|i: ",
+    "           UooU\\.'@@@@@@`.||' ",
+    "           \\__/(@@@@@@@@@@)'  ",
+    "                (@@@@@@@@)    ",
+    "                `YY~~~~YY'    ",
+    "                 ||    ||     "
+  ],
+  actionPos: [
+    [ 0, 2 ],
+    [ 1, 3 ],
+    [ 2, 4 ],
+    [ 3, 5 ],
+    [ 4, 6 ],
+  ],
+  eyesPos: [
+    [ 5, 12 ],
+    [ 5, 13 ]
+  ]
 };

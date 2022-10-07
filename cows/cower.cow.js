@@ -1,23 +1,20 @@
 "use strict";
 
-
-/** @type {import(".").CowStrictRenderer} */
-function render(a) {
-  return (
-    "     " + a + "\n" +
-    "      " + a + "\n" +
-    "        ,__, |    | \n" +
-    "        (oo)\\|    |___\n" +
-    "        (__)\\|    |   )\\_\n" +
-    "             |    |_w |  \\\n" +
-    "             |    |  ||   *\n\n" +
-    "             Cower...."
-  );
-}
-
-
 /** @type {import(".").Cow} */
 module.exports = {
   name: "cower",
-  render: render
+  template: [
+    "     \\",
+    "      \\",
+    "        ,__, |    | ",
+    "        (oo)\\|    |___",
+    "        (__)\\|    |   )\\_",
+    "             |    |_w |  \\",
+    "             |    |  ||   *\n",
+    "             Cower...."
+  ],
+  actionPos: [
+    [ 0, 5 ],
+    [ 1, 6 ]
+  ]
 };

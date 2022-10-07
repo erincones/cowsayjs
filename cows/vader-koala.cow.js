@@ -1,25 +1,23 @@
 "use strict";
 
-
-/** @type {import(".").CowStrictRenderer} */
-function render(a) {
-  return (
-    "   " + a +  "\n" +
-    "    " + a + "        .\n" +
-    "     .---.  //\n" +
-    "    Y|o o|Y// \n" +
-    "   /_(i=i)K/ \n" +
-    "   ~()~*~()~  \n" +
-    "    (_)-(_)   \n\n" +
-    "     Darth \n" +
-    "     Vader    \n" +
-    "     koala        "
-  );
-}
-
-
 /** @type {import(".").Cow} */
 module.exports = {
   name: "vader-koala",
-  render: render
+  template: [
+    "   \\",
+    "    \\        .",
+    "     .---.  //",
+    "    Y|o o|Y//",
+    "   /_(i=i)K/",
+    "   ~()~*~()~",
+    "    (_)-(_)",
+    "",
+    "     Darth",
+    "     Vader",
+    "     koala"
+  ],
+  actionPos: [
+    [ 0, 3 ],
+    [ 1, 4 ]
+  ]
 };

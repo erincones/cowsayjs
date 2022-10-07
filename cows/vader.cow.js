@@ -1,22 +1,21 @@
 "use strict";
 
-
-/** @type {import(".").CowStrictRenderer} */
-function render(a) {
-  return (
-    "        " + a + "    ,-^-.\n" +
-    "         " + a + "   !oYo!\n" +
-    "          " + a + " /./=\\.\\______\n" +
-    "               ##        )\\/\\\n" +
-    "                ||-----w||\n" +
-    "                ||      ||\n\n" +
-    "               Cowth Vader"
-  );
-}
-
-
 /** @type {import(".").Cow} */
 module.exports = {
   name: "vader",
-  render: render
+  template: [
+    "        \\    ,-^-.",
+    "         \\   !oYo!",
+    "          \\ /./=\\.\\______",
+    "               ##        )\\/\\",
+    "                ||-----w||",
+    "                ||      ||",
+    "",
+    "               Cowth Vader"
+  ],
+  actionPos: [
+    [ 0, 8 ],
+    [ 1, 9 ],
+    [ 2, 10 ]
+  ]
 };

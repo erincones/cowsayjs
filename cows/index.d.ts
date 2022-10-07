@@ -24,56 +24,35 @@ declare function fix(value: string | undefined, def: string | undefined, len: nu
 
 
 /**
- * Cow renderer function
- *
- * @callback CowRenderer
- * @param action Action
- * @param eyes Eyes
- * @param tongue Tongue
- * @returns Final cow
+ * Position index
  */
-export declare type CowRenderer = (action?: string, eyes?: string, tongue?: string) => string;
+declare type Position = [ number, number ];
 
 /**
- * Cow strict renderer function
- *
- * @callback CowStrictRenderer
- * @param action Action
- * @param eyes Eyes
- * @param tongue Tongue
- * @returns Final cow
+ * Cow action
  */
-export declare type CowStrictRenderer = (action: string, eyes: string, tongue: string) => string;
+export declare type CowAction = `o` | `\\`;
 
 
 /**
- * Cow base template
+ * Cow
  */
-declare interface CowBase {
+export interface Cow {
   /** Cow name */
   name: string;
   /** Default eyes for empty string */
-  eyes?: string;
+  defEyes?: string;
   /** Default tongue for empty string */
-  tongue?: string;
+  defTongue?: string;
+  /** Cow template */
+  template: string[];
+  /** Action position indexes */
+  actionPos?: Position[];
+  /** Eyes position indexes */
+  eyesPos?: Position[];
+  /** Tongue position indexes */
+  tonguePos?: Position[];
 }
-
-/**
- * Cow template
- */
-export declare interface Cow extends CowBase {
-  /** Renderer function */
-  render: CowRenderer;
-}
-
-/**
- * Cow strict template
- */
-export declare interface CowStrict extends CowBase {
-  /** Renderer function */
-  render: CowStrictRenderer;
-}
-
 
 
 /**
@@ -84,17 +63,20 @@ export declare interface CowStrict extends CowBase {
 export declare const corral: Cow[];
 
 /**
- * Get cow from file
- *
- * @param path Path of the cow file
- * @returns A deep copy of the cow
- */
-export declare function cowParser(path: string): Cow;
-
-/**
  * Find a cow in the corral by name
  *
  * @param name Cow name
  * @returns Matching cow
  */
 export declare function getCow(name: string): Cow;
+
+/**
+ * Cow renderer function
+ *
+ * @param cow Cow to render
+ * @param action Action
+ * @param eyes Eyes
+ * @param tongue Tongue
+ * @returns Rendered cow
+ */
+ export declare function renderCow(cow: Cow, action: CowAction, eyes?: string, tongue?: string): string;

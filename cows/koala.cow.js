@@ -1,22 +1,19 @@
 "use strict";
 
-
-/** @type {import(".").CowStrictRenderer} */
-function render(a) {
-  return (
-    "  " + a + "\n" +
-    "   " + a + "\n" +
-    "       ___  \n" +
-    "     {~._.~}\n" +
-    "      ( Y )\n" +
-    "     ()~*~()   \n" +
-    "     (_)-(_)   "
-  );
-}
-
-
 /** @type {import(".").Cow} */
 module.exports = {
   name: "koala",
-  render: render
+  template: [
+    "  \\",
+    "   \\",
+    "       ___  ",
+    "     {~._.~}",
+    "      ( Y )",
+    "     ()~*~()   ",
+    "     (_)-(_)   "
+  ],
+  actionPos: [
+    [ 0, 2 ],
+    [ 0, 3 ]
+  ]
 };

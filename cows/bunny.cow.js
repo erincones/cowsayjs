@@ -1,20 +1,17 @@
 "use strict";
 
-
-/** @type {import(".").CowStrictRenderer} */
-function render(a) {
-  return (
-    "  " + a + "\n" +
-    "   " + a + "   \\\n" +
-    "        \\ /\\\n" +
-    "        ( )\n" +
-    "      .( o )."
-  );
-}
-
-
 /** @type {import(".").Cow} */
 module.exports = {
   name: "bunny",
-  render: render
+  template: [
+    "  \\",
+    "   \\   \\",
+    "        \\ /\\",
+    "        ( )",
+    "      .( o )."
+  ],
+  actionPos: [
+    [ 0, 2 ],
+    [ 1, 3 ]
+  ]
 };

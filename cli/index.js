@@ -78,7 +78,7 @@ function getArg(token, j, argv, i) {
  */
 function printHelp() {
   // Version
-  var version = "1.0.7";
+  var version = "1.1.0";
 
   // Get current script
   var script = process.argv[1].replace(/\\/g, "/");
@@ -161,7 +161,7 @@ function printCorral() {
 /**
  * Parse the script arguments
  *
- * @param {import("../lib/box").CowAction} [action] Default cow action
+ * @param {import("../lib/box").BoxAction} [action] Default cow action
  * @returns {CowArgs} Script arguments
  */
 function parseArgs(action) {
