@@ -17,5 +17,9 @@ module.exports = {
   actionPos: [
     [ 0, 7 ],
     [ 1, 8 ]
+  ],
+  eyesPos: [
+    [ 3, 13 ],
+    [ 3, 14 ]
   ]
 };

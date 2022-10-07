@@ -25,6 +25,6 @@ module.exports = {
   ],
   actionPos: [
     [ 0, 3 ],
-    [ 0, 4 ]
+    [ 1, 4 ]
   ]
 };

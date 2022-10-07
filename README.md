@@ -76,7 +76,7 @@ commands, once installed, run `cowsayjs -h`, `cowthinkjs -h` or `moojs -h` to
 print the help.
 
 ```Text
-moojs, cowsayjs, cowthinkjs v1.1.2
+moojs, cowsayjs, cowthinkjs v1.1.3
 Copyright (c) 2021 Erick Rincones
 Licensed under the MIT License
 
@@ -252,7 +252,7 @@ moo({
 ```Text
  __________________________
 ( I need to sleep          )
-( 2022-10-07T22:20:33.463Z )
+( 2022-10-07T22:57:16.496Z )
  --------------------------
         o   ^__^
          o  (@@)\_______

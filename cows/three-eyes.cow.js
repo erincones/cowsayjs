@@ -21,6 +21,6 @@ module.exports = {
   ],
   tonguePos: [
     [ 3, 12 ],
-    [ 4, 13 ]
+    [ 3, 13 ]
   ]
 };
