@@ -1,6 +1,6 @@
 {
   "name": "cowsayjs",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A nodejs clone of the classic cowsay and cowthink cli commands",
   "main": "lib/index.js",
   "scripts": {
@@ -35,7 +35,10 @@
     "cowthink",
     "moo",
     "cli",
-    "ascii"
+    "ascii",
+    "es5",
+    "custom",
+    "customizable"
   ],
   "author": "Erick Rincones <erick.rincones@ciens.ucv.ve>",
   "license": "MIT",

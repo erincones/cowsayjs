@@ -10,6 +10,7 @@ module.exports = {
     "           (__)    )\\",
     "              ||--|| *"
   ],
+  defEyes: "..",
   actionPos: [
     [ 0, 7 ],
     [ 1, 8 ]

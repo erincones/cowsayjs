@@ -1,5 +1,7 @@
 "use strict";
 
+var utils = require("../lib/utils");
+
 
 /**
  * Position index
@@ -41,6 +43,89 @@
 
 
 /**
+ * Cows list
+ *
+ * The default cow is in the first position.
+ *
+ * @type {ReadonlyArray<Readonly<Cow>>}
+ * @constant
+ * @package
+ */
+var corral = [
+  require("./default.cow"),
+  require("./apt.cow"),
+  require("./beavis.zen.cow"),
+  require("./blowfish.cow"),
+  require("./bong.cow"),
+  require("./bud-frogs.cow"),
+  require("./bunny.cow"),
+  require("./calvin.cow"),
+  require("./cheese.cow"),
+  require("./cock.cow"),
+  require("./cower.cow"),
+  require("./daemon.cow"),
+  require("./dragon-and-cow.cow"),
+  require("./dragon.cow"),
+  require("./duck.cow"),
+  require("./elephant-in-snake.cow"),
+  require("./elephant.cow"),
+  require("./eyes.cow"),
+  require("./flaming-sheep.cow"),
+  require("./fox.cow"),
+  require("./ghostbusters.cow"),
+  require("./gnu.cow"),
+  require("./head-in.cow"),
+  require("./hellokitty.cow"),
+  require("./kangaroo.cow"),
+  require("./kiss.cow"),
+  require("./kitty.cow"),
+  require("./koala.cow"),
+  require("./kosh.cow"),
+  require("./luke-koala.cow"),
+  require("./mech-and-cow.cow"),
+  require("./meow.cow"),
+  require("./milk.cow"),
+  require("./moofasa.cow"),
+  require("./moose.cow"),
+  require("./mutilated.cow"),
+  require("./pony-smaller.cow"),
+  require("./pony.cow"),
+  require("./ren.cow"),
+  require("./satanic.cow"),
+  require("./sheep.cow"),
+  require("./skeleton.cow"),
+  require("./small.cow"),
+  require("./snowman.cow"),
+  require("./sodomized.cow"),
+  require("./stegosaurus.cow"),
+  require("./stimpy.cow"),
+  require("./supermilker.cow"),
+  require("./surgery.cow"),
+  require("./suse.cow"),
+  require("./telebears.cow"),
+  require("./three-eyes.cow"),
+  require("./turkey.cow"),
+  require("./turtle.cow"),
+  require("./tux.cow"),
+  require("./udder.cow"),
+  require("./unipony-smaller.cow"),
+  require("./unipony.cow"),
+  require("./vader-koala.cow"),
+  require("./vader.cow"),
+  require("./www.cow")
+];
+
+/**
+ * Custom cows list
+ *
+ * @type {Readonly<Cow>[]}
+ * @constant
+ * @package
+ */
+var customCorral = [];
+
+
+/**
  * Truncate string to the given length
  *
  * @param {string | undefined} str String to truncate
@@ -73,75 +158,6 @@ function fix(value, empty, undef, len) {
 
   return truncate(value, len);
 }
-
-
-/**
- * Cows list
- *
- * The default cow is in the first position.
- *
- * @type {ReadonlyArray<Readonly<Cow>>}
- * @constant
- * @package
- */
-var corral = [
-  require("./default.cow"),
-  require("./beavis.zen.cow"),
-  require("./blowfish.cow"),
-  require("./bong.cow"),
-  require("./bud-frogs.cow"),
-  require("./bunny.cow"),
-  require("./cheese.cow"),
-  require("./cower.cow"),
-  require("./daemon.cow"),
-  require("./dragon-and-cow.cow"),
-  require("./dragon.cow"),
-  require("./elephant-in-snake.cow"),
-  require("./elephant.cow"),
-  require("./eyes.cow"),
-  require("./flaming-sheep.cow"),
-  require("./ghostbusters.cow"),
-  require("./head-in.cow"),
-  require("./hellokitty.cow"),
-  require("./kiss.cow"),
-  require("./kitty.cow"),
-  require("./koala.cow"),
-  require("./kosh.cow"),
-  require("./luke-koala.cow"),
-  require("./meow.cow"),
-  require("./milk.cow"),
-  require("./moofasa.cow"),
-  require("./moose.cow"),
-  require("./mutilated.cow"),
-  require("./ren.cow"),
-  require("./satanic.cow"),
-  require("./sheep.cow"),
-  require("./skeleton.cow"),
-  require("./small.cow"),
-  require("./sodomized.cow"),
-  require("./stegosaurus.cow"),
-  require("./stimpy.cow"),
-  require("./supermilker.cow"),
-  require("./surgery.cow"),
-  require("./telebears.cow"),
-  require("./three-eyes.cow"),
-  require("./turkey.cow"),
-  require("./turtle.cow"),
-  require("./tux.cow"),
-  require("./udder.cow"),
-  require("./vader.cow"),
-  require("./vader-koala.cow"),
-  require("./www.cow")
-];
-
-/**
- * Custom cows list
- *
- * @type {Readonly<Cow>[]}
- * @constant
- * @package
- */
-var customCorral = [];
 
 
 /**
@@ -184,7 +200,7 @@ function getCow(name) {
 
   // Find cow
   if (typeof name === "string") {
-    cow = corral.concat(customCorral).find(function(cow) {
+    cow = utils.find(corral.concat(customCorral), function(cow) {
       return cow.name === name;
     });
   }
@@ -263,6 +279,7 @@ function renderCow(cow, action, eyes, tongue) {
   // Get values to interpolate
   /** @type {Readonly<CowTemplateArgs>[]} */
   var values = [];
+  var act = -1;
 
   if (cow.tonguePos) {
     values.push({ pos: cow.tonguePos, str: fix(tongue, cow.defTongue, "  ", 2) });
@@ -274,17 +291,25 @@ function renderCow(cow, action, eyes, tongue) {
 
   if (cow.actionPos) {
     values.push({ pos: cow.actionPos, str: fix(action, undefined, undefined, 1) });
+    act = values.length - 1;
   }
 
   // Interpolate values
-  values.forEach(function(val) {
-    var len = val.str.length;
-    val.pos.forEach(function(pos, i) {
-      var char = i < len ? val.str[i] : val.str.slice(-1);
+  values.forEach(function(val, i) {
+    // Position indexes fixer and face position index flag
+    var fix = 0;
+    var f = i !== act;
+
+    val.pos.forEach(function(pos, j) {
+      var char = val.str[j] || (f && j === 1 ? "" : val.str.slice(-1));
       var pos0 = pos[0];
-      var pos1 = pos[1];
+      var pos1 = pos[1] - fix;
       var line = lines[pos0];
       lines[pos0] = line.slice(0, pos1) + char + line.slice(pos1 + 1);
+
+      if (char.length === 0) {
+        ++fix;
+      }
     });
   });
 

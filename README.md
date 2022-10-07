@@ -22,12 +22,13 @@
 
 A nodejs clone of the classic cowsay and cowthink cli commands.
 
-Coded from scratch in pure ES5 for maximum support, zero dependencies and
-well documented with JSDoc and TypeScript declaration files to use in modern
-develop environments.
+Coded from scratch in pure ES5 for maximum support on client and server side,
+zero dependencies and well documented with JSDoc and TypeScript declaration
+files to use in modern develop environments. Also, custom cows and modes
+management feature has been implemented.
 
-Full coverage tests have been made comparing the outpus with the original cowsay
-commands to ensure the maximum fidelity.
+Full coverage tests under revision, comparing the outpus with the
+original cowsay commands to ensure the maximum fidelity.
 
 
 ## Online example
@@ -75,7 +76,7 @@ commands, once installed, run `cowsayjs -h`, `cowthinkjs -h` or `moojs -h` to
 print the help.
 
 ```Text
-moojs, cowsayjs, cowthinkjs v1.1.1
+moojs, cowsayjs, cowthinkjs v1.1.2
 Copyright (c) 2021 Erick Rincones
 Licensed under the MIT License
 
@@ -176,7 +177,7 @@ The base for the cow options is a `CowOptions`.
 
 ```TypeScript
 interface CowOptions {
-  cow?: string;
+  cow?: string | Cow;
   mode?: string;
   eyes?: string;
   tongue?: string;
@@ -242,7 +243,7 @@ cowsay("English is not my native language", {
 
 ```TypeScript
 moo({
-  message: `I have to sleep ${new Date().toISOString()}`,
+  message: `I need to sleep ${new Date().toISOString()}`,
   mode: `paranoia`,
   action: `think`,
   wrap: false
@@ -250,8 +251,8 @@ moo({
 ```
 ```Text
  __________________________
-( I have to sleep          )
-( 2021-04-08T06:27:51.776Z )
+( I need to sleep          )
+( 2022-10-07T22:20:33.463Z )
  --------------------------
         o   ^__^
          o  (@@)\_______
@@ -259,6 +260,139 @@ moo({
                 ||----w |
                 ||     ||
 ```
+
+```Typescript
+// Custom cow
+cowthink({
+  message: `No way, I don't want the leftovers of your love.`,
+  cow: {
+    name: `custom`,
+    template: [
+      `  \\`,
+      `   \\`,
+      `      //`,
+      `     ('>`,
+      `     /rr`,
+      `    *\))_`
+    ],
+    actionPos: [
+      [ 0, 2 ],
+      [ 1, 3 ]
+    ]
+  }
+});
+```
+
+```Text
+ _______________________________________
+( No way, I don't want the leftovers of )
+( your love.                            )
+ ---------------------------------------
+  o
+   o
+      //
+     ('>
+     /rr
+    *))_
+```
+
+
+#### Custom cows and modes management
+
+For custom cows management, consider the next `Cow` type definition:
+
+```Typescript
+type Position = [ number, number ];
+
+interface Cow {
+  /** Cow name */
+  name: string;
+  /** Default eyes for empty string */
+  defEyes?: string;
+  /** Default tongue for empty string */
+  defTongue?: string;
+  /** Cow template */
+  template: ReadonlyArray<string>;
+  /** Action position indexes */
+  actionPos?: ReadonlyArray<Position>;
+  /** Eyes position indexes */
+  eyesPos?: ReadonlyArray<Position>;
+  /** Tongue position indexes */
+  tonguePos?: ReadonlyArray<Position>;
+}
+```
+
+Where `Position` is a list of pairs of numbers where the first entry refers to
+the template line and the second entry refers to the caracter position of the
+template line. Both values are zero based.
+
+Use the custom cows management functions to add or remove custom cows. Take in
+count that predefined cows cannot be modified, you cannot add two cows with
+the same name.
+
+Custom cows are sorted by lexicographic order.
+
+```Typescript
+/**
+ * Add a new cow to the custom corral
+ *
+ * @param cow New cow to add
+ * @returns whether the cow could be added
+ */
+function addCow(cow: Cow): boolean;
+
+/**
+ * Remove a cow from the custom corral
+ *
+ * @param name Cow name
+ * @returns Removed cow
+ */
+function removeCow(name: string): Cow | undefined;
+```
+
+
+For custom modes management, consider the next `CowModeData` type definition:
+
+```Typescript
+interface CowModeData {
+  /** The short name of the mode */
+  id: string;
+  /** The full name of the mode */
+  name: string;
+  /** Eyes of the cow */
+  eyes?: string;
+  /** Tongue of the cow */
+  tongue?: string;
+}
+```
+Use the custom modes management functions to add ro remove custom modes. Take
+in count that predefined modes cannot be modified, you cannot add two modes
+with the same ID and name, ID should have one character and match with the
+first character of the name.
+
+Custom modes are sorted by lexicographical order.
+
+```Typescript
+/**
+ * Add a new cow mode data to the custom cow mode data list
+ *
+ * Cow mode data id should match with the first name letter (case sensitive) and
+ * should be different to any existing option.
+ *
+ * @param modeData Cow mode data to add
+ * @returns Whether the cow mode data could be added
+ */
+function addMode(modeData: CowModeData): boolean;
+
+/**
+ * Remove a cow mode data from the custom cow mode data list
+ *
+ * @param id The id or name of the cow mode
+ * @return Removed cow mode data
+ */
+function removeMode(id: string): CowModeData | undefined;
+```
+
 
 ## Utilities
 
@@ -268,12 +402,22 @@ files.
 
 ```JavaScript
 // List of cows
-import { corral } from "cowsayjs/cows";
+import {
+  corral,        // List of predefined cows
+  customCorral,  // List of custom cows
+  getCow,        // Get cow from the given name
+  addCow,        // Add a new custom cow
+  removeCow,     // Remove a custom cow
+  renderCow      // Generate the cow string
+} from "cowsayjs/cows";
 
 import {
-  modes,    // List of modes
-  faceMode, // Get mode for the given eyes and tongue
-  modeFace  // Get face for the given mode
+  modes,        // List of predefined modes
+  customModes,  // List of custom modes
+  faceMode,     // Get mode from the given eyes and tongue
+  modeFace,     // Get face from the given mode
+  addMode,      // Add a new custom mode
+  removeMode    // Remove a custom mode
 } from "cowsayjs/lib/mode";
 
 import {

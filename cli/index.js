@@ -82,7 +82,7 @@ function getArg(token, j, argv, i) {
  */
 function printHelp() {
   // Version
-  var version = "1.1.1";
+  var version = "1.1.2";
 
   // Get current script
   var script = process.argv[1].replace(/\\/g, "/");

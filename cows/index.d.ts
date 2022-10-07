@@ -68,7 +68,7 @@ export declare function addCow(cow: Cow): boolean;
  * Remove a cow from the custom corral
  *
  * @param name Cow name
- * @returns Matching cow
+ * @returns Removed cow
  */
 export declare function removeCow(name: string): Cow | undefined;
 
