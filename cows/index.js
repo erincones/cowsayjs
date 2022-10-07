@@ -5,7 +5,33 @@
  * Position index
  *
  * @typedef {[ number, number ]} Position
+ * @package
  */
+
+
+/**
+ * Cow values to interpolate
+ *
+ * @typedef {Object} CowTemplateArgs
+ * @property {ReadonlyArray<Position>} pos Position indexes
+ * @property {string} str String to interpolate
+ * @package
+ */
+
+/**
+ * Mutable Cow
+ *
+ * @typedef {Object} MutableCow
+ * @property {string} name Cow name
+ * @property {string} [defEyes] Default eyes
+ * @property {string} [defTongue] Default tongue
+ * @property {ReadonlyArray<string>} template Cow template
+ * @property {ReadonlyArray<Position>} [actionPos] Action position indexes
+ * @property {ReadonlyArray<Position>} [eyesPos] Eyes position indexes
+ * @property {ReadonlyArray<Position>} [tonguePos] Tongue position indexes
+ * @package
+ */
+
 
 /**
  * Cow action
@@ -17,14 +43,7 @@
 /**
  * Cow
  *
- * @typedef {Object} Cow
- * @property {string} name Cow name
- * @property {string} [defEyes] Default eyes
- * @property {string} [defTongue] Default tongue
- * @property {string[]} template Cow template
- * @property {Position[]} [actionPos] Action position indexes
- * @property {Position[]} [eyesPos] Eyes position indexes
- * @property {Position[]} [tonguePos] Tongue position indexes
+ * @typedef {Readonly<MutableCow>} Cow
  */
 
 
@@ -68,7 +87,7 @@ function fix(value, empty, undef, len) {
  *
  * The default cow is in the first position.
  *
- * @type {Cow[]}
+ * @type {ReadonlyArray<Cow>}
  * @constant
  * @package
  */
@@ -122,6 +141,15 @@ var corral = [
   require("./www.cow")
 ];
 
+/**
+ * Custom cows list
+ *
+ * @type {Cow[]}
+ * @constant
+ * @package
+ */
+var customCorral = [];
+
 
 /**
  * Find a cow in the corral by name
@@ -136,18 +164,56 @@ function getCow(name) {
   }
 
   // Find cow
-  var i = 0;
+  return corral.concat(customCorral).find(function(cow) {
+    return cow.name === name;
+  }) || corral[0];
+}
 
-  do {
-    var cow = corral[i];
+/**
+ * Add a new cow to the custom corral
+ *
+ * @param {Cow} cow New cow to add
+ * @returns {boolean} whether the cow could be added
+ */
+function addCow(cow) {
+  // Check if the cow already exists
+  if (getCow(cow.name).name === cow.name) {
+    return false;
+  }
 
-    if (cow.name === name) {
-      return cow;
-    }
-  } while (++i < corral.length);
+  // Add cow and sort corral
+  customCorral.push(cow);
+  customCorral.sort(function(a, b) {
+    return a.name.localeCompare(b.name);
+  });
 
-  // Return default cow
-  return corral[0];
+  return true;
+}
+
+/**
+ * Remove a cow from the custom corral
+ *
+ * @param {string} name Cow name
+ * @returns {Cow | undefined} Matching cow
+ */
+function removeCow(name) {
+  // Return undefined for not valid string
+  if (typeof name !== "string") {
+    return undefined;
+  }
+
+  // Get cow index
+  var ind = customCorral.findIndex(function(cow) {
+    return cow.name === name;
+  });
+
+  // Remove cow from corral and return it
+  if (ind !== -1) {
+    return customCorral.splice(ind, 1)[0];
+  }
+
+  // Not found cow
+  return undefined;
 }
 
 
@@ -165,17 +231,31 @@ function renderCow(cow, action, eyes, tongue) {
   // Copy template
   var lines = cow.template.slice();
 
+  // Get values to interpolate
+  /** @type {Readonly<CowTemplateArgs>[]} */
+  var values = [];
+
+  if (cow.tonguePos) {
+    values.push({ pos: cow.tonguePos, str: fix(tongue, cow.defTongue, "  ", 2) });
+  }
+
+  if (cow.eyesPos) {
+    values.push({ pos: cow.eyesPos, str: fix(eyes, cow.defEyes, "oo", 2) });
+  }
+
+  if (cow.actionPos) {
+    values.push({ pos: cow.actionPos, str: fix(action, undefined, undefined, 1) });
+  }
+
   // Interpolate values
-  [
-    { pos: cow.tonguePos || [], str: fix(tongue, cow.defTongue, "  ", 2) },
-    { pos: cow.eyesPos || [],   str: fix(eyes, cow.defEyes, "oo", 2) },
-    { pos: cow.actionPos || [], str: fix(action, undefined, undefined, 1) },
-  ].forEach(function(val) {
+  values.forEach(function(val) {
     var len = val.str.length;
     val.pos.forEach(function(pos, i) {
       var char = i < len ? val.str[i] : val.str.slice(-1);
-      var line = lines[pos[0]];
-      lines[pos[0]] = line.slice(0, pos[1]) + char + line.slice(pos[1] + 1);
+      var pos0 = pos[0];
+      var pos1 = pos[1];
+      var line = lines[pos0];
+      lines[pos0] = line.slice(0, pos1) + char + line.slice(pos1 + 1);
     });
   });
 
@@ -190,6 +270,9 @@ function renderCow(cow, action, eyes, tongue) {
  */
 module.exports = {
   corral: corral,
+  customCorral: customCorral,
   getCow: getCow,
+  addCow: addCow,
+  removeCow: removeCow,
   renderCow: renderCow
 };

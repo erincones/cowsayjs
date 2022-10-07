@@ -4,29 +4,10 @@
 
 
 /**
- * Truncate string to the given length
- *
- * @param str String to truncate
- * @param len Maximum length
- * @returns Truncated string
- */
- declare function truncate(str: string | undefined, len: number): string;
-
-/**
- * Force cow value to the given lenght at least
- *
- * @param value Cow value
- * @param def Default value
- * @param len Maximum length
- * @returns Fixed value
- */
-declare function fix(value: string | undefined, def: string | undefined, len: number): string;
-
-
-/**
  * Position index
  */
 declare type Position = [ number, number ];
+
 
 /**
  * Cow action
@@ -37,21 +18,21 @@ export declare type CowAction = `o` | `\\`;
 /**
  * Cow
  */
-export interface Cow {
+export declare interface Cow {
   /** Cow name */
-  name: string;
+  readonly name: string;
   /** Default eyes for empty string */
-  defEyes?: string;
+  readonly defEyes?: string;
   /** Default tongue for empty string */
-  defTongue?: string;
+  readonly defTongue?: string;
   /** Cow template */
-  template: string[];
+  readonly template: ReadonlyArray<string>;
   /** Action position indexes */
-  actionPos?: Position[];
+  readonly actionPos?: ReadonlyArray<Position>;
   /** Eyes position indexes */
-  eyesPos?: Position[];
+  readonly eyesPos?: ReadonlyArray<Position>;
   /** Tongue position indexes */
-  tonguePos?: Position[];
+  readonly tonguePos?: ReadonlyArray<Position>;
 }
 
 
@@ -60,7 +41,12 @@ export interface Cow {
  *
  * The default cow is in the first position.
  */
-export declare const corral: Cow[];
+export declare const corral: ReadonlyArray<Cow>;
+
+/**
+ * Custom cows list
+ */
+export declare const customCorral: Cow;
 
 /**
  * Find a cow in the corral by name
@@ -71,6 +57,22 @@ export declare const corral: Cow[];
 export declare function getCow(name: string): Cow;
 
 /**
+ * Add a new cow to the custom corral
+ *
+ * @param cow New cow to add
+ * @returns whether the cow could be added
+ */
+export declare function addCow(cow: Cow): boolean;
+
+/**
+ * Remove a cow from the custom corral
+ *
+ * @param name Cow name
+ * @returns Matching cow
+ */
+export declare function removeCow(name: string): Cow | undefined;
+
+/**
  * Cow renderer function
  *
  * @param cow Cow to render
@@ -79,4 +81,4 @@ export declare function getCow(name: string): Cow;
  * @param tongue Tongue
  * @returns Rendered cow
  */
- export declare function renderCow(cow: Cow, action: CowAction, eyes?: string, tongue?: string): string;
+export declare function renderCow(cow: Cow, action: CowAction, eyes?: string, tongue?: string): string;
