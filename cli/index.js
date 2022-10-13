@@ -42,11 +42,6 @@ var cows = require("../cows");
  */
 var package_json = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "package.json"), "utf8"));
 
-/**
- * Current year
- */
-var year = new Date().getFullYear();
-
 
 /**
  * Get all available cow mode data IDs
@@ -98,6 +93,9 @@ function getArg(token, j, argv, i) {
  * @package
  */
 function printHelp() {
+  // Current year
+  var year = new Date().getFullYear();
+
   // Get current script
   var script = process.argv[1].replace(/\\/g, "/");
   script = script.slice(script.lastIndexOf("/") + 1).replace(/\./, "");
