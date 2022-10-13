@@ -1,5 +1,8 @@
 "use strict";
 
+var fs = require("fs");
+var path = require("path");
+
 var lib = require("../lib");
 var mode = require("../lib/mode");
 var cows = require("../cows");
@@ -29,6 +32,20 @@ var cows = require("../cows");
  * @property {number} next Next argument list index
  * @package
  */
+
+
+/**
+ * Parsed `package.json` file
+ *
+ * @type {Record<string, string | string[] | Record<string, string>>}
+ * @package
+ */
+var package_json = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "package.json"), "utf8"));
+
+/**
+ * Current year
+ */
+var year = new Date().getFullYear();
 
 
 /**
@@ -81,9 +98,6 @@ function getArg(token, j, argv, i) {
  * @package
  */
 function printHelp() {
-  // Version
-  var version = "1.1.3";
-
   // Get current script
   var script = process.argv[1].replace(/\\/g, "/");
   script = script.slice(script.lastIndexOf("/") + 1).replace(/\./, "");
@@ -91,8 +105,8 @@ function printHelp() {
 
   // Script info
   var info =
-    "moojs, cowsayjs, cowthinkjs v" + version + "\n" +
-    "Copyright (c) 2021 Erick Rincones\n" +
+    "moojs, cowsayjs, cowthinkjs v" + package_json.version + "\n" +
+    "Copyright (c) " + year + " Erick Rincones\n" +
     "Licensed under the MIT License\n\n";
 
   // Brief

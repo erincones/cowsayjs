@@ -27,18 +27,31 @@ var utils = require("../lib/utils");
  * @typedef {"o" | "\\"} CowAction
  */
 
+
 /**
- * Cow
+ * Cow name
  *
- * @typedef {Object} Cow
+ * @typedef {Object} CowName
  * @property {string} name Cow name
+ * @package
+ */
+
+/**
+ * Cow without name
+ *
+ * @typedef {Object} CowBase
  * @property {string} [defEyes] Default eyes
  * @property {string} [defTongue] Default tongue
  * @property {ReadonlyArray<string>} template Cow template
  * @property {ReadonlyArray<Position>} [actionPos] Action position indexes
  * @property {ReadonlyArray<Position>} [eyesPos] Eyes position indexes
  * @property {ReadonlyArray<Position>} [tonguePos] Tongue position indexes
- * @package
+ */
+
+/**
+ * Cow
+ *
+ * @typedef {CowBase & CowName} Cow
  */
 
 
@@ -266,7 +279,7 @@ function removeCow(name) {
 /**
  * Cow renderer function
  *
- * @param {Cow} cow Cow to render
+ * @param {CowBase} cow Cow to render
  * @param {CowAction} [action] Action
  * @param {string} [eyes] Eyes
  * @param {string} [tongue] Tongue

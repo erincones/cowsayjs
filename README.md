@@ -76,8 +76,8 @@ commands, once installed, run `cowsayjs -h`, `cowthinkjs -h` or `moojs -h` to
 print the help.
 
 ```Text
-moojs, cowsayjs, cowthinkjs v1.1.3
-Copyright (c) 2021 Erick Rincones
+moojs, cowsayjs, cowthinkjs v1.1.4
+Copyright (c) 2022 Erick Rincones
 Licensed under the MIT License
 
   A nodejs clone of the classic cowsay and cowthink cli commands.
@@ -252,7 +252,7 @@ moo({
 ```Text
  __________________________
 ( I need to sleep          )
-( 2022-10-07T22:57:16.496Z )
+( 2022-10-13T19:18:51.885Z )
  --------------------------
         o   ^__^
          o  (@@)\_______
@@ -263,21 +263,26 @@ moo({
 
 ```Typescript
 // Custom cow
-cowthink({
+cowsay({
   message: `No way, I don't want the leftovers of your love.`,
+  eyes: `••`,
   cow: {
-    name: `custom`,
     template: [
-      `  \\`,
-      `   \\`,
-      `      //`,
-      `     ('>`,
-      `     /rr`,
-      `    *\))_`
+      `     \\\\`,
+      `      \\\\`,
+      `(\\__/) ||`,
+      `(oㅅo) ||`,
+      `/    づ`
     ],
     actionPos: [
-      [ 0, 2 ],
-      [ 1, 3 ]
+      [ 0, 5 ],
+      [ 0, 6 ],
+      [ 1, 6 ],
+      [ 1, 7 ]
+    ],
+    eyesPos: [
+      [ 3, 1 ],
+      [ 3, 3 ]
     ]
   }
 });
@@ -285,15 +290,14 @@ cowthink({
 
 ```Text
  _______________________________________
-( No way, I don't want the leftovers of )
-( your love.                            )
+/ No way, I don't want the leftovers of \
+\ your love.                            /
  ---------------------------------------
-  o
-   o
-      //
-     ('>
-     /rr
-    *))_
+     \\
+      \\
+(\__/) ||
+(•ㅅ•) ||
+/    づ
 ```
 
 

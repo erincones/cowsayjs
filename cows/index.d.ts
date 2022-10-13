@@ -16,11 +16,9 @@ export declare type CowAction = `o` | `\\`;
 
 
 /**
- * Cow
+ * Cow without name
  */
-export declare interface Cow {
-  /** Cow name */
-  name: string;
+export declare interface CowBase {
   /** Default eyes for empty string */
   defEyes?: string;
   /** Default tongue for empty string */
@@ -33,6 +31,14 @@ export declare interface Cow {
   eyesPos?: ReadonlyArray<Position>;
   /** Tongue position indexes */
   tonguePos?: ReadonlyArray<Position>;
+}
+
+/**
+ * Cow
+ */
+export declare interface Cow extends CowBase {
+  /** Cow name */
+  name: string;
 }
 
 
@@ -81,4 +87,4 @@ export declare function removeCow(name: string): Cow | undefined;
  * @param tongue Tongue
  * @returns Rendered cow
  */
-export declare function renderCow(cow: Cow, action: CowAction, eyes?: string, tongue?: string): string;
+export declare function renderCow(cow: CowBase, action: CowAction, eyes?: string, tongue?: string): string;
