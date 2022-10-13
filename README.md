@@ -454,6 +454,6 @@ Share and enjoy!
 [web]: https://nextmoo.vercel.app
 [cowsay(1)]: https://linux.die.net/man/1/cowsay
 
-[modes]: lib/mode.js#L36
+[modes]: lib/mode.js#L40
 [cows]: cows/
 [LICENSE]: LICENSE
