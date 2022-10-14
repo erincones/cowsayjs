@@ -5,4 +5,4 @@ var cli = require(".");
 
 
 // Parse and execute arguments
-cli.execArgs(cli.parseArgs("think"));
+cli.exec("think");

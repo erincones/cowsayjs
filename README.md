@@ -1,10 +1,11 @@
-[![](https://img.shields.io/npm/v/cowsayjs)][npm]
-[![](https://img.shields.io/npm/dt/cowsayjs)][npm]
-[![](https://img.shields.io/github/stars/erincones/cowsayjs)][github]
-[![](https://img.shields.io/github/issues-raw/erincones/cowsayjs)][issues]
-[![](https://img.shields.io/github/last-commit/erincones/cowsayjs)][commits]
-[![](https://img.shields.io/github/languages/code-size/erincones/cowsayjs)][github]
-[![](https://img.shields.io/npm/l/cowsayjs)][LICENSE]
+[![npm version](https://img.shields.io/npm/v/cowsayjs)][npm]
+[![npm total downloads](https://img.shields.io/npm/dt/cowsayjs)][npm]
+[![npm bundle size](https://img.shields.io/bundlephobia/minzip/cowsayjs)][npm]
+[![npm license](https://img.shields.io/npm/l/cowsayjs)][LICENSE]
+
+[![GitHub stars](https://img.shields.io/github/stars/erincones/cowsayjs)][stars]
+[![GitHub open issues](https://img.shields.io/github/issues-raw/erincones/cowsayjs)][issues]
+[![GitHub last commit](https://img.shields.io/github/last-commit/erincones/cowsayjs)][commits]
 
 
 # cowsayjs
@@ -76,7 +77,7 @@ commands, once installed, run `cowsayjs -h`, `cowthinkjs -h` or `moojs -h` to
 print the help.
 
 ```Text
-moojs, cowsayjs, cowthinkjs v1.1.4
+moojs, cowsayjs, cowthinkjs v1.2.0
 Copyright (c) 2022 Erick Rincones
 Licensed under the MIT License
 
@@ -448,6 +449,7 @@ Share and enjoy!
 <!-- References -->
 [npm]: https://www.npmjs.com/package/cowsayjs
 [github]: https://github.com/erincones/cowsayjs
+[stars]: https://github.com/erincones/cowsayjs/stargazers
 [commits]: https://github.com/erincones/cowsayjs/graphs/commit-activity
 [issues]: https://github.com/erincones/cowsayjs/issues
 

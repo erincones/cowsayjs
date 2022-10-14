@@ -47,6 +47,7 @@ var package_json = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "packag
  * Get all available cow mode data IDs
  *
  * @returns {string[]}
+ * @package
  */
 function getModes() {
   return mode.modes
@@ -182,6 +183,7 @@ function printCorral() {
  *
  * @param {import("../lib/box").BoxAction} [action] Default cow action
  * @returns {CowArgs} Script arguments
+ * @package
  */
 function parseArgs(action) {
   // Set default action and initial values
@@ -265,11 +267,14 @@ function parseArgs(action) {
 }
 
 /**
- * Execute the given cow aruments
+ * Parse arguments and execute the given cow action
  *
- * @param {CowArgs} args Cow arguments
+ * @param {import("../lib/box").BoxAction} [action] Default cow action
  */
-function execArgs(args) {
+function exec(action) {
+  // Get arguments
+  var args = parseArgs(action);
+
   // Print help
   if (args.help) {
     printHelp();
@@ -302,11 +307,10 @@ function execArgs(args) {
 
 
 /**
- * Argument parse and other cli utilites
+ * Argument parser
  *
  * @module cowsayjs/cli
  */
 module.exports = {
-  parseArgs: parseArgs,
-  execArgs: execArgs
+  exec: exec
 };
