@@ -1,3 +1,10 @@
+# v1.2.3
+
+## Fixed
+
+- Codecov badge in [`README.md`](https://github.com/erincones/cowsayjs/blob/v1.2.3/README.md).
+
+
 # v1.2.2
 
 ## Features

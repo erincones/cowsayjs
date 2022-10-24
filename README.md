@@ -1,9 +1,9 @@
 [![npm version](https://img.shields.io/npm/v/cowsayjs)][npm]
 [![npm total downloads](https://img.shields.io/npm/dt/cowsayjs)][npm]
 [![npm bundle size](https://img.shields.io/bundlephobia/minzip/cowsayjs)][npm]
-[![codecov](https://codecov.io/gh/erincones/cowsayjs/branch/main/graph/badge.svg)][codecov]
 [![node current version](https://img.shields.io/node/v/cowsayjs)][npm]
 
+[![codecov](https://codecov.io/gh/erincones/cowsayjs/branch/master/graph/badge.svg)][codecov]
 [![GitHub stars](https://img.shields.io/github/stars/erincones/cowsayjs)][stars]
 [![GitHub open issues](https://img.shields.io/github/issues-raw/erincones/cowsayjs)][issues]
 [![GitHub last commit](https://img.shields.io/github/last-commit/erincones/cowsayjs)][commits]
@@ -80,7 +80,7 @@ commands, once installed, run `cowsayjs -h`, `cowthinkjs -h` or `moojs -h` to
 print the help.
 
 ```Text
-moojs, cowsayjs, cowthinkjs v1.2.2
+moojs, cowsayjs, cowthinkjs v1.2.3
 Copyright (c) 2022 Erick Rincones
 Licensed under the MIT License
 
