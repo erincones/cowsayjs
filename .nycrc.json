@@ -5,8 +5,8 @@
     "lib/**"
   ],
   "reporter": [
-    "html",
     "json-summary",
+    "lcov",
     "text"
   ]
 }

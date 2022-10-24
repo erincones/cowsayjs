@@ -3,6 +3,7 @@
 [![npm bundle size](https://img.shields.io/bundlephobia/minzip/cowsayjs)][npm]
 [![node current version](https://img.shields.io/node/v/cowsayjs)][npm]
 
+[![codecov](https://codecov.io/gh/erincones/cowsayjs/branch/main/graph/badge.svg)][codecov]
 [![GitHub stars](https://img.shields.io/github/stars/erincones/cowsayjs)][stars]
 [![GitHub open issues](https://img.shields.io/github/issues-raw/erincones/cowsayjs)][issues]
 [![GitHub last commit](https://img.shields.io/github/last-commit/erincones/cowsayjs)][commits]
@@ -468,6 +469,7 @@ Share and enjoy!
 [stars]: https://github.com/erincones/cowsayjs/stargazers
 [commits]: https://github.com/erincones/cowsayjs/graphs/commit-activity
 [issues]: https://github.com/erincones/cowsayjs/issues
+[codecov]: https://codecov.io/gh/erincones/cowsayjs
 
 [tony]: https://github.com/tnalpgge/rank-amateur-cowsay
 [web]: https://nextmoo.vercel.app
