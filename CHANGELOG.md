@@ -1,3 +1,14 @@
+# v1.2.2
+
+## Features
+
+- Setup CI with Github actions.
+- Add coverage test action workflow with Codecov.
+
+### To do
+- [x] Setup CI.
+
+
 # v1.2.1
 
 ## Features
