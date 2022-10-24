@@ -31,9 +31,6 @@ zero dependencies and well documented with JSDoc and TypeScript declaration
 files to use in modern develop environments. Also, custom cows and modes
 management feature has been implemented.
 
-Full coverage tests under revision, comparing the outpus with the
-original cowsay commands to ensure the maximum fidelity.
-
 
 ## Online example
 
@@ -80,7 +77,7 @@ commands, once installed, run `cowsayjs -h`, `cowthinkjs -h` or `moojs -h` to
 print the help.
 
 ```Text
-moojs, cowsayjs, cowthinkjs v1.2.3
+moojs, cowsayjs, cowthinkjs v2.0.0
 Copyright (c) 2022 Erick Rincones
 Licensed under the MIT License
 

@@ -1,3 +1,14 @@
+# v2.0.0
+
+## Feature
+
+- Second phase finished. Customization, tests, code coverage and CI are correctly implemented.
+
+## Fixed
+
+- Remove paragraph about tests revision in [`README.md`](https://github.com/erincones/cowsayjs/blob/v2.0.0/README.md).
+
+
 # v1.2.3
 
 ## Fixed
