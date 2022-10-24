@@ -1,8 +1,12 @@
 name: Tests and code coverage
 run-name: Coverage test of ${{ github.ref }} by @${{ github.actor }}
-on: push
-  tags:
-    - '*'
+on:
+  push:
+    tags:
+      - '*'
+  pull_request:
+    tags:
+      - '*'
 
 jobs:
   tests_and_cover:
