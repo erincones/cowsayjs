@@ -28,7 +28,7 @@ var COWTHINK = env.COWTHINK || "cowthink";
  * @returns {string} Command output or empty string if an error occours
  */
 function cli(command) {
-  return child_process.execSync(command).toString();
+  return child_process.execSync(command + " 2>/dev/null").toString();
 }
 
 /**
@@ -38,7 +38,9 @@ function cli(command) {
  * @returns Absolute command path
  */
 function exists(command) {
-  return cli("type -p " + command + " 2>/dev/null");
+  return process.platform === "win32" ?
+    cli("where " + command) :
+    cli("which " + command);
 }
 
 
@@ -52,16 +54,6 @@ function trimLinesEnd(str) {
   return str
     .replace(/ +\n/g, "\n")
     .replace(/(?: |\n)+$/, "");
-}
-
-/**
- * Unescape special characters
- *
- * @param {string} str String to unescape
- * @returns {string} Unescaped string
- */
-function unescape(str) {
-  return JSON.stringify(str).replace(/^"(.*)"$/, "$$'$1'");
 }
 
 
@@ -83,8 +75,13 @@ function test(opt, command, info) {
   }
 
   // Compare cows
-  if (command) {
-    var cowsay = trimLinesEnd(cli(command));
+  if (command && env.SKIP_TESTS_STRICT !== "1") {
+    try {
+      var cowsay = trimLinesEnd(cli(command));
+    }
+    catch (err) {
+      return;
+    }
 
     assert.strictEqual(moosay, cowsay, info);
   }
@@ -179,10 +176,10 @@ describe("cow actions", function() {
   });
 
   it("should perform say and think actions in empty box without cow", function() {
-    var say = trimLinesEnd(box.say());
-    var think = trimLinesEnd(box.think());
-    var emptySay = trimLinesEnd(" _ \n<   >\n - ");
-    var emptyThink = trimLinesEnd(" _ \n(   )\n - ");
+    var say = box.say();
+    var think = box.think();
+    var emptySay = " __\n<  >\n --\n";
+    var emptyThink = " __\n(  )\n --\n";
 
     assert.strictEqual(say, emptySay);
     assert.strictEqual(think, emptyThink);
@@ -231,9 +228,6 @@ describe("cow modes", function() {
     "x", "xy", "yx", "xyz"
   ];
 
-  // Mesage
-  var argMsg = unescape(MSG);
-
 
   // Build faces
   mode.modes.forEach(function(mode) {
@@ -245,12 +239,12 @@ describe("cow modes", function() {
       faces.forEach(function(prop) {
         var libEyes = prop;
         var libTongue = prop;
-        var argEyes = prop !== undefined ? "-e " + unescape(prop) : "";
-        var argTongue = prop !== undefined ? "-T " + unescape(prop) : "";
+        var argEyes = prop !== undefined ? "-e '" + prop + "'" : "";
+        var argTongue = prop !== undefined ? "-T '" + prop + "'" : "";
 
         // Parse arguments and options
         var args = [ argMode, argEyes, argTongue ].join(" ").trim();
-        var command = [ "echo", argMsg, "|" , COWSAY, args ].join(" ");
+        var command = [ "echo", MSG, "|" , COWSAY, args ].join(" ");
         var opt = {
           message: MSG,
           mode: libMode,
@@ -266,7 +260,7 @@ describe("cow modes", function() {
   });
 
 
-  // Query modes
+  // Query faces
   describe("mode faces querying", function() {
     mode.modes.forEach(function(known) {
       it("should find the right face for the " + JSON.stringify(known.name) + " mode", function() {
@@ -320,6 +314,77 @@ describe("cow modes", function() {
       assert.strictEqual(invalid.name, mode.modes[0].name);
     });
   });
+
+  // Custom modes manipulation
+  describe("custom modes manipulation", function() {
+    var goodModeData = [
+      { id: "a", name: "a_mode" },
+      { id: "A", name: "A_mode", eyes: "AE" },
+      { id: "B", name: "B_mode", tongue: "BT" },
+      { id: "C", name: "C_mode", eyes: "CE", tongue: "CT" },
+    ];
+
+    /** @type {any[]} */
+    var badModeData = [
+      undefined,
+      null,
+      false,
+      0,
+      "",
+      [],
+      {},
+      { id: 0 },
+      { id: "x", name: null },
+      { id: "x", name: "x", eyes: 0 },
+      { id: "x", name: "x", eyes: "", tongue: false },
+      { id: "xy", name: "" },
+      { id: "x", name: "" },
+      { id: "x", name: "y" },
+      { id: "u", name: "u" },
+      { id: "W", name: "W" },
+      goodModeData[0]
+    ];
+
+    it("should add valid new custom modes", function() {
+      // Add valid modes
+      goodModeData.forEach(function(modeData) {
+        assert.strictEqual(true, mode.addMode(modeData));
+      });
+
+      // Try to add not valid modes
+      badModeData.forEach(function(modeData) {
+        assert.strictEqual(false, mode.addMode(modeData));
+      });
+    });
+
+    it("should use added custom modes", function() {
+      // Use added modes by ID and name
+      goodModeData.forEach(function(modeData) {
+        var cowFromId = lib.cowsay({ mode: modeData.id });
+        var cowFromName = lib.cowsay({ mode: modeData.name });
+        var cowFromArgs = lib.cowsay({ eyes: modeData.eyes, tongue: modeData.tongue });
+
+        assert.strictEqual(cowFromId, cowFromName);
+        assert.strictEqual(cowFromId, cowFromArgs);
+      });
+    });
+
+    it("should remove custom modes", function() {
+      // Remove valid modes
+      goodModeData.forEach(function(modeData, i) {
+        var removed = mode.removeMode(i % 2 ? modeData.id : modeData.name);
+        assert.deepStrictEqual(JSON.stringify(modeData), JSON.stringify(removed));
+        assert.strictEqual(lib.cowsay({ mode: modeData.id }), lib.cowsay());
+      });
+
+      // Try to remove not valid modes
+      badModeData.forEach(function(modeData) {
+        if (typeof modeData === "object" && modeData !== null) {
+          assert.strictEqual(undefined, mode.removeMode(modeData.id));
+        }
+      });
+    });
+  });
 });
 
 
@@ -361,9 +426,6 @@ describe("cows templates", function() {
     { eyes: "xy",      tongue: "xy" }
   ];
 
-  // Mesage
-  var argMsg = unescape(MSG);
-
 
   // Compare against original commands
   corral.forEach(function(cow) {
@@ -374,12 +436,12 @@ describe("cows templates", function() {
       faces.forEach(function(face) {
         var libEyes = face.eyes;
         var libTongue = face.tongue;
-        var argEyes = face.eyes !== undefined ? "-e " + unescape(face.eyes) : "";
-        var argTongue = face.tongue !== undefined ? "-T " + unescape(face.tongue) : "";
+        var argEyes = face.eyes !== undefined ? "-e '" + face.eyes + "'" : "";
+        var argTongue = face.tongue !== undefined ? "-T '" + face.tongue + "'" : "";
 
         // By face
         var args = [ argCow, argEyes, argTongue ].join(" ").trim();
-        var command = [ "echo", argMsg, "|", COWSAY, args ].join(" ");
+        var command = [ "echo", MSG, "|", COWSAY, args ].join(" ");
         var opt = {
           message: MSG,
           cow: cow && cow.name,
@@ -412,6 +474,139 @@ describe("cows templates", function() {
 
       assert.strictEqual(empty.name, cows.corral[0].name);
       assert.strictEqual(invalid.name, cows.corral[0].name);
+    });
+  });
+
+  // Custom cows manipulation
+  describe("custom cows manipulation", function() {
+    /** @type {import("../cows").Cow[]} */
+    var goodCows = [
+      {
+        name: "cow0",
+        template: [
+          "    \\  (\\__/)",
+          "     \\ (•ㅅ•)",
+          "       /    づ"
+        ],
+        actionPos: [ [ 0, 4 ],[ 1, 5 ] ]
+      },
+      {
+        name: "cow1",
+        template: [
+          "    \\  (\\__/)",
+          "     \\ (•ㅅ•)",
+          "       /    づ"
+        ],
+        actionPos: [ [ 0, 4 ],[ 1, 5 ] ],
+        eyesPos: [ [ 1, 8 ], [ 1, 10 ] ]
+      },
+      {
+        name: "cow2",
+        template: [
+          "    \\  (\\__/)",
+          "     \\ (•ㅅ•)",
+          "       /    づ"
+        ],
+        defEyes: "••",
+        actionPos: [ [ 0, 4 ],[ 1, 5 ] ],
+        eyesPos: [ [ 1, 8 ], [ 1, 10 ] ]
+      },
+      {
+        name: "cow3",
+        template: [
+          "    \\  (\\__/)",
+          "     \\ (•ㅅ•)",
+          "       /    づ"
+        ],
+        defTongue: "U ",
+        actionPos: [ [ 0, 4 ],[ 1, 5 ] ],
+        eyesPos: [ [ 1, 8 ], [ 1, 10 ] ],
+        tonguePos: [ [ 2, 10 ], [ 2, 11 ] ]
+      },
+      {
+        name: "cow4",
+        template: [
+          "    \\  (\\__/)",
+          "     \\ (•ㅅ•)",
+          "       /    づ"
+        ],
+        defEyes: "••",
+        defTongue: "U ",
+        actionPos: [ [ 0, 4 ],[ 1, 5 ] ],
+        eyesPos: [ [ 1, 8 ], [ 1, 10 ] ],
+        tonguePos: [ [ 2, 10 ], [ 2, 11 ] ]
+      }
+    ];
+
+    /** @type {any[]} */
+    var badCows = [
+      undefined,
+      null,
+      [],
+      0,
+      false,
+      "",
+      {},
+      { name: null },
+      { name: 0 },
+      { name: "cow" },
+      { name: "cow", template: null },
+      { name: "cow", template: [ 0 ] },
+      { name: "cow", template: [ [] ] },
+      { name: "", template: [ "" ] },
+      { name: "cow", template: [ "" ], actionPos: null },
+      { name: "cow", template: [ "" ], actionPos: 0 },
+      { name: "cow", template: [ "" ], actionPos: [ 1 ] },
+      { name: "cow", template: [ "" ], actionPos: [ [] ] },
+      { name: "cow", template: [ "" ], actionPos: [ [ "a" ] ] },
+      { name: "cow", template: [ "" ], actionPos: [ [ "a", "a" ] ] },
+      { name: "cow", template: [ "" ], actionPos: [ [ 1, "a" ] ] },
+      { name: "cow", template: [ "" ], actionPos: [ [ 0, 1, 2 ] ] },
+      { name: "cow", template: [ "" ], actionPos: [ [ 0, 1 ], [] ] },
+      { name: "cow", template: [ "" ], defEyes: null },
+      { name: "cow", template: [ "" ], defEyes: 0 },
+      { name: "cow", template: [ "" ], defTongue: null },
+      { name: "cow", template: [ "" ], defTongue: 0 },
+      goodCows[0]
+    ];
+
+    it("should add new custom cows", function() {
+      // Add valid cows
+      goodCows.forEach(function(cow) {
+        assert.strictEqual(true, cows.addCow(cow));
+      });
+
+      // Try to add not valid cows
+      badCows.forEach(function(cow) {
+        assert.strictEqual(false, cows.addCow(cow));
+      });
+    });
+
+    it("should use added custom cows", function() {
+      // Use added modes by ID and name
+      goodCows.forEach(function(cow) {
+        var nameOpts = { cow: cow.name };
+        var cowOpts = { cow: cow };
+
+        assert.strictEqual(lib.cowsay(nameOpts), lib.cowsay(cowOpts));
+        assert.strictEqual(lib.cowthink(nameOpts), lib.cowthink(cowOpts));
+      });
+    });
+
+    it("should remove custom cows", function() {
+      // Remove valid cows
+      goodCows.forEach(function(cow) {
+        var removed = cows.removeCow(cow.name);
+        assert.deepStrictEqual(JSON.stringify(cow), JSON.stringify(removed));
+        assert.strictEqual(lib.cowsay({ cow: cow.name }), lib.cowsay());
+      });
+
+      // Try to remove not valid cows
+      badCows.forEach(function(cow) {
+        if (typeof cow === "object" && cow !== null) {
+          assert.strictEqual(undefined, cows.removeCow(cow.name));
+        }
+      });
     });
   });
 });
@@ -469,7 +664,7 @@ describe("word wrap", function() {
 
 
     // Mesage and command
-    var argMsg = opt.message === undefined ? "" : unescape(opt.message);
+    var argMsg = opt.message === undefined ? "''" : "'" + opt.message + "'";
     var command = [ "echo", argMsg, "|", COWSAY, argWrap ].join(" ");
 
     // Test information and title

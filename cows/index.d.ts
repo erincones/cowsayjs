@@ -55,6 +55,15 @@ export declare const corral: ReadonlyArray<Readonly<Cow>>;
 export declare const customCorral: Readonly<Cow>[];
 
 /**
+ * Validate the given custom cow
+ *
+ * @param cow Custom cow to validata
+ * @param name Validate name
+ * @returns Whether the custom cow is valid
+ */
+export declare function validateCow(cow: Cow | CowBase, name?: boolean): boolean;
+
+/**
  * Find a cow in the corral by name
  *
  * @param name Cow name

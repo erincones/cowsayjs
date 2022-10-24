@@ -32,8 +32,7 @@ module.exports = {
     "               ,Z|,m.a.,dp",
     "            .,?f` ,E?:\"^7b",
     "            `A| . .F^^7'^4,",
-    "             @9@mmBmmmmmQM$",
-    "             ..MMMMMMMMMMMQzna,",
+    "             1.MMMMMMMMMMMQzna,",
     "         ...f\"A.JdT     J:    Jp,",
     "          `JNa..........A....af`",
     "               `^^^^^'`"

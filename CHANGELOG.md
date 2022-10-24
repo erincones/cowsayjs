@@ -1,3 +1,24 @@
+# v1.2.1
+
+## Features
+
+- Add nyc setup file and `package.json` script.
+- Add mocha setup file.
+- Add tests for custom cows and modes management.
+- Reference to original source code in [`README.md`](https://github.com/erincones/cowsayjs/blob/v1.2.1/README.md).
+- Update dependencies.
+
+## Fixed
+
+- Some cows designs have been fixed.
+- Box generation for empty messages.
+- Test script has been improved.
+
+### To do
+- [x] Fix tests.
+- [ ] Setup CI.
+
+
 # v1.2.0
 
 ## Features

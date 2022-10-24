@@ -12,7 +12,7 @@ module.exports = {
     "           \\____/|----w |",
     "                ||     ||",
     "",
-    "	         Moofasa"
+    "                 Moofasa"
   ],
   actionPos: [
     [ 0, 7 ],

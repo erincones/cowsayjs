@@ -12,7 +12,7 @@ module.exports = {
     "     ()~*~()   ",
     "     (_)-(_)   ",
     "     Luke    ",
-    "     Sywalker",
+    "     Skywalker",
     "     koala   "
   ],
   actionPos: [

@@ -12,8 +12,8 @@
     "noEmit": true
   },
   "exclude": [
-    "node_modules/",
     ".nyc_output/",
-    "coverage/"
+    "coverage/",
+    "node_modules/"
   ]
 }

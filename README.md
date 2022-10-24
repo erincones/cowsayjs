@@ -1,11 +1,12 @@
 [![npm version](https://img.shields.io/npm/v/cowsayjs)][npm]
 [![npm total downloads](https://img.shields.io/npm/dt/cowsayjs)][npm]
 [![npm bundle size](https://img.shields.io/bundlephobia/minzip/cowsayjs)][npm]
-[![npm license](https://img.shields.io/npm/l/cowsayjs)][LICENSE]
+[![node current version](https://img.shields.io/node/v/cowsayjs)][npm]
 
 [![GitHub stars](https://img.shields.io/github/stars/erincones/cowsayjs)][stars]
 [![GitHub open issues](https://img.shields.io/github/issues-raw/erincones/cowsayjs)][issues]
 [![GitHub last commit](https://img.shields.io/github/last-commit/erincones/cowsayjs)][commits]
+[![npm license](https://img.shields.io/npm/l/cowsayjs)][LICENSE]
 
 
 # cowsayjs
@@ -21,7 +22,8 @@
                 ||     ||
 ```
 
-A nodejs clone of the classic cowsay and cowthink cli commands.
+A nodejs clone of the classic cowsay and cowthink cli commands, originally
+written in Perl by [Tony Monroe][tony].
 
 Coded from scratch in pure ES5 for maximum support on client and server side,
 zero dependencies and well documented with JSDoc and TypeScript declaration
@@ -77,7 +79,7 @@ commands, once installed, run `cowsayjs -h`, `cowthinkjs -h` or `moojs -h` to
 print the help.
 
 ```Text
-moojs, cowsayjs, cowthinkjs v1.2.0
+moojs, cowsayjs, cowthinkjs v1.2.1
 Copyright (c) 2022 Erick Rincones
 Licensed under the MIT License
 
@@ -438,6 +440,20 @@ Install the dev dependencies to run the tests locally. The classic `cowsay` and
 `cowthink` commands must be installed in your system to be able to run the
 tests.
 
+There are certain environment variables which you can control the tests.
+
+| Environment variable  | Description                                     | Default value |
+|-----------------------|-------------------------------------------------|---------------|
+| `MSG`                 | Standard message for short tests                | `moo`         |
+| `COWSAY`              | Cowsay command                                  | `cowsay`      |
+| `COWTHINK`            | Cowthink command                                | `cowthink`    |
+| `SKIP_TESTS_COMMANDS` | If `1`, skips the command existence tests       |               |
+| `SKIP_TESTS_ACTION`   | If `1`, skips the actions tests                 |               |
+| `SKIP_TESTS_MODE`     | If `1`, skips the modes tests                   |               |
+| `SKIP_TESTS_CORRAL`   | If `1`, skips the corral tests                  |               |
+| `SKIP_TESTS_STRICT`   | If `1`, skips the comparison with `COWSAY` cows |               |
+| `SKIP_TESTS_WRAP`     | If `1`, skips the wrapping tests                |               |
+
 
 ## License
 
@@ -453,6 +469,7 @@ Share and enjoy!
 [commits]: https://github.com/erincones/cowsayjs/graphs/commit-activity
 [issues]: https://github.com/erincones/cowsayjs/issues
 
+[tony]: https://github.com/tnalpgge/rank-amateur-cowsay
 [web]: https://nextmoo.vercel.app
 [cowsay(1)]: https://linux.die.net/man/1/cowsay
 

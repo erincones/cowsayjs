@@ -174,10 +174,36 @@ function fix(value, empty, undef, len) {
 
 
 /**
+ * Check if the given position array is valid
+ *
+ * @param {ReadonlyArray<Position> | undefined} arr Position array
+ * @returns Whether the position array is valid
+ * @package
+ */
+function validatePositionArray(arr) {
+  // Undefined arrays are allowed
+  if (arr === undefined) {
+    return true;
+  }
+
+  // Not arrays are not allowed
+  if (!Array.isArray(arr)) {
+    return false;
+  }
+
+  // Validate format of every position
+  return arr.every(function(pos) {
+    return Array.isArray(pos) && pos.length === 2 && typeof pos[0] === "number" && typeof pos[1] === "number";
+  });
+}
+
+
+/**
  * Create a full deep copy of the given cow
  *
  * @param {Cow} cow Cow to copy
  * @returns {Cow} A copy of the given cow
+ * @package
  */
 function copyCow(cow) {
   /**
@@ -199,6 +225,31 @@ function copyCow(cow) {
     eyesPos: cow.eyesPos ? cow.eyesPos.map(copier) : undefined,
     tonguePos: cow.tonguePos ? cow.tonguePos.map(copier) : undefined,
   };
+}
+
+/**
+ * Validate the given custom cow
+ *
+ * @param {Cow & CowBase} cow Custom cow to validata
+ * @param {boolean} [name=false] Validate name
+ * @returns {boolean} Whether the custom cow is valid
+ */
+function validateCow(cow, name) {
+  var valid = true;
+  valid = valid && typeof cow === "object" && cow !== null && !Array.isArray(cow);
+  valid = valid && Array.isArray(cow.template);
+  valid = valid && cow.template.every(function(line) { return typeof line === "string"; });
+  valid = valid && (cow.defEyes === undefined || typeof cow.defEyes === "string");
+  valid = valid && (cow.defTongue === undefined || typeof cow.defTongue === "string");
+  valid = valid && validatePositionArray(cow.actionPos);
+  valid = valid && validatePositionArray(cow.eyesPos);
+  valid = valid && validatePositionArray(cow.tonguePos);
+
+  if (name) {
+    valid = valid && typeof cow.name === "string" && cow.name.length > 0;
+  }
+
+  return valid;
 }
 
 /**
@@ -234,6 +285,10 @@ function getCow(name) {
  * @returns {boolean} Whether the cow could be added
  */
 function addCow(cow) {
+  if (!validateCow(cow, true)) {
+    return false;
+  }
+
   // Check if the cow already exists
   if (getCow(cow.name).name === cow.name) {
     return false;
@@ -338,6 +393,7 @@ function renderCow(cow, action, eyes, tongue) {
 module.exports = {
   corral: corral.map(copyCow),
   customCorral: customCorral,
+  validateCow: validateCow,
   getCow: getCow,
   addCow: addCow,
   removeCow: removeCow,
